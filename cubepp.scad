@@ -12,10 +12,12 @@
 // CURRENT VERSION: 0.0.1
 // Change log
 // '-> 0.0.1 - modules for cube_r and cube_s finalized
-// pland
+// '-> 0.0.2 - box and box_r added
+// planned
 // '-> cube_c for cube with corners cut of
 
 $fn = 45;
+NAN = acos(2);
 
 // creates cube of given dimensions x,y,z with the corner rounded in the XY plane by diameter d
 // '-> x - dimension in x axis
@@ -98,6 +100,7 @@ module _sphere_cube (x,y,z,d, center=false)
     C = z-d;
     R = d/2;
     
+    // solve center transform
     t = center ? [R-x/2,R-y/2,R-z/2] : [R,R,R];
        
     // minkowski implementation
@@ -129,8 +132,103 @@ module sphere_cube(t,d, center=false)
 // '-> same interface and name as cube module
 module cube_s (t,d, center=false)
 {
-    sphere_cube(t,d center);
+    sphere_cube(t,d, center);
 }
+
+/********
+* BOXES *
+********/
+
+// basic box
+// '-> x,y,z - outer dimensions
+// '-> t - wall thickness
+module _box(x,y,z,wt,bt, center=false)
+{
+    assert(wt>0, str("given wall thickness wt=",wt," must be greater than zero"));
+    if (wt!=bt)
+    {
+        assert(bt>0, str("given botton thickness bt=",bt," must be greater than zero"));
+    }
+    // solve center transform
+    tf = center ? [-x/2,-y/2,-z/2] : [0,0,0];
+    
+    translate(tf)
+    difference()
+    {
+        
+        // outer shell
+        cube([x,y,z]);
+        
+        // hole
+        translate([wt,wt,bt])
+            cube([x-2*wt,y-2*wt,z]);
+    }
+}
+
+// _box wrapper
+module box_xyz(x,y,z,wt,bt=NAN, center=false)
+{
+    _bt = is_num(bt) ? bt : wt;
+    _box(x,y,z,wt,_bt, center);
+}
+
+
+// _box wrapper
+module box(s,wt,bt=NAN, center=false)
+{
+    assert(len(s)==3, str("given size vector has size, ", len(s), " but size 3 is required"));
+    _bt = is_num(bt) ? bt : wt;
+    _box_r(s.x,s.y,s.z,wt,_bt, center);
+}
+
+// box with corners round in XY plane
+// x,y,z - outer dimensions
+// d - rounding diameter
+// bt - bottom thickness
+// wt - wall thickness
+module _box_r(x,y,z,d,wt,bt, center=false)
+{
+    assert(wt>0, str("given wall thickness wt=",wt," must be greater than zero"));
+    if (wt!=bt)
+    {
+        assert(bt>0, str("given botton thickness bt=",bt," must be greater than zero"));
+    }
+    
+    assert(d>=2*wt, str("given diameter d=",d," must be at least twice of wall thickness wt=", wt));  
+   
+    r = d/2;
+    // solve center transform
+    tf = center ? [r-x/2,r-y/2,r-z/2] : [0,0,0];
+    
+    translate(tf)
+    difference()
+    {
+        
+        // outer shell
+        cube_r([x,y,z],d);
+        
+        // hole
+        translate([wt,wt,bt])
+            cube_r([x-2*wt,y-2*wt,z],d-2*wt);
+    }
+}
+
+// _box_r wrapper
+module box_r_xyz(x,y,z,d,wt,bt=NAN, center=false)
+{   
+    _bt = is_num(bt) ? bt : wt;
+    _box_r(x,y,z,d,wt,_bt, center);
+}
+
+
+// _box_r wrapper
+module box_r(s,d,wt,bt=NAN, center=false)
+{
+    assert(len(s)==3, str("given size vector has size, ", len(s), " but size 3 is required"));
+    _bt = is_num(bt) ? bt : wt;
+    _box_r(s.x,s.y,s.z,d,wt,_bt, center);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 // trash to be removed
