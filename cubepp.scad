@@ -14,11 +14,17 @@
 // '-> 0.0.1 - modules for cube_r and cube_s finalized
 // '-> 0.0.2 - box and box_r added
 // '-> 0.0.2.1 - box and box_r fixed
+// '-> 0.0.3.0 - cube_c for cube with corners cut of
+
 // planned
-// '-> cube_c for cube with corners cut of
+// solve issue with carved box
+// carved cube and box
 
 $fn = 45;
 NAN = acos(2);
+
+/*********************************************************************************************
+* '-> ROUND CUBE */
 
 // creates cube of given dimensions x,y,z with the corner rounded in the XY plane by diameter d
 // '-> x - dimension in x axis
@@ -26,7 +32,7 @@ NAN = acos(2);
 // '-> z - dimension in z axis
 // '-> d - diameter of corners rounded in XY-plane
 // '-> center same as in cube module
-module _round_cube(x,y,z,d,center=false)
+module _round_cube(x,y,z,d,center=false,fn=$fn)
 {
     assert(x >= d && y >= d, str("given diameter(d=",d,") exceed one of sides(x=",x,",y=",y,")! Use round_cube_lazy to automatically choose diameter."));
     
@@ -41,10 +47,10 @@ module _round_cube(x,y,z,d,center=false)
     translate(t)
     {
         // corners
-        cylinder(d=d, h=C);
-        translate([A,0,0]) cylinder(d=d, h=C);
-        translate([A,B,0]) cylinder(d=d, h=C);
-        translate([0,B,0]) cylinder(d=d, h=C);
+        cylinder(d=d, h=C, $fn=fn);
+        translate([A,0,0]) cylinder(d=d, h=C, $fn=fn);
+        translate([A,B,0]) cylinder(d=d, h=C, $fn=fn);
+        translate([0,B,0]) cylinder(d=d, h=C, $fn=fn);
         
         // fill
         translate([-d/2,0,0]) cube([x,y-d,z]);
@@ -80,11 +86,14 @@ module round_cube (t,d, center=false)
 }
 
 // wrapper for _round_cube module
-// '-> same interface and name as cube module
+// '-> similar interface and naming convetion as cube module
 module cube_r(t,d, center=false)
 {
     round_cube(t,d, center);
 }
+
+/*********************************************************************************************
+* '-> SPHERE CUBE */
 
 // creates cube of given dimenions x,y,z with corners rounded in XYZ by diameter d
 // '-> x - dimension in x axis
@@ -92,7 +101,7 @@ module cube_r(t,d, center=false)
 // '-> z - dimension in z axis
 // '-> d - rounded corners diameter
 // '-> center same as in cube module
-module _sphere_cube (x,y,z,d, center=false)
+module _sphere_cube (x,y,z,d, center=false, fn=$fn)
 {
     assert(x >= d && y >= d, str("given diameter(d=",d,") exceed one of sides(x=",x,",y=",y,")! Use round_cube_lazy to automatically choose diameter."));
     
@@ -109,7 +118,7 @@ module _sphere_cube (x,y,z,d, center=false)
     minkowski()
     {
         cube([A,B,C]);
-        sphere(r=R);
+        sphere(r=R, $fn=fn);
     }
     
 }
@@ -130,11 +139,77 @@ module sphere_cube(t,d, center=false)
 }
 
 // wrapper for _sphere_cube module
-// '-> same interface and name as cube module
+// '-> similar interface and naming convetion as cube module
 module cube_s (t,d, center=false)
 {
     sphere_cube(t,d, center);
 }
+
+/*********************************************************************************************
+* '-> CHOPPED CUBE */
+
+// creates cube of given dimenions x,y,z with corners chopped in XY by a
+// '-> x - dimension in x axis
+// '-> y - dimension in y axis
+// '-> z - dimension in z axis
+// '-> a - distance of the cut from corners in XY plane
+// '-> center same as in cube module
+module _chopped_cube(x,y,z,a, center=false)
+{
+    _round_cube(x,y,z,2*a,center,fn=4);
+}
+
+// _chopped_cube wrapper with same arguments as original function
+module chopped_cube(x,y,z,a, center=false)
+{
+    _chopped_cube(x,y,z,a, center);
+}
+
+// wrapper for _sphere_cube module
+// '-> dimensions s=[x,y,z]
+// '-> a - distance of the cut from corners
+module chopped_cube(s,a, center=false)
+{
+    assert(len(s)==3, str("given size vector has size, ", len(s), " but size 3 is required"));
+    _sphere_cube(s.x,s.y,s.z,a, center);
+}
+
+// wrapper for _sphere_cube module
+// '-> similar interface and naming convetion as cube module
+module cube_c(s,a, center=false)
+{
+    chopped_cube(s,a, center);
+}
+
+//_chopped_cube(10,10,10,2);
+
+/*
+module _carved_cube(x,y,z,a, center=false)
+{
+    assert(x >= 2*a && y >= 2*a, str("given carve parameter (d=",a,") exceed one of sides(x=",x,",y=",y,")! Use round_cube_lazy to automatically choose diameter."));
+    
+    A = x-d;
+    B = y-d;
+    C = z-d;
+    R = a;
+    
+    // solve center transform
+    t = center ? [R-x/2,R-y/2,R-z/2] : [R,R,R];
+       
+    // minkowski implementation
+    translate(t)
+    minkowski()
+    {
+        cube([A,B,C]);
+        rotate([45,45,45])
+            cube([a,a,a]);
+    }
+}
+
+%cube([10,10,10]);
+_carved_cube(10,10,10,2);
+*/
+
 
 /********
 * BOXES *
@@ -142,7 +217,8 @@ module cube_s (t,d, center=false)
 
 // basic box
 // '-> x,y,z - outer dimensions
-// '-> t - wall thickness
+// bt - bottom thickness
+// wt - wall thickness
 module _box(x,y,z,wt,bt, center=false)
 {   
     echo(str(x,y,z,wt,bt,center));
@@ -188,7 +264,7 @@ module box(s,wt,bt=NAN, center=false)
 // d - rounding diameter
 // bt - bottom thickness
 // wt - wall thickness
-module _box_r(x,y,z,d,wt,bt, center=false)
+module _box_r(x,y,z,d,wt,bt, center=false, fn=$fn)
 {
     assert(wt>0, str("given wall thickness wt=",wt," must be greater than zero"));
     if (wt!=bt)
@@ -206,11 +282,11 @@ module _box_r(x,y,z,d,wt,bt, center=false)
     {
         
         // outer shell
-        cube_r([x,y,z],d);
+        cube_r([x,y,z],d,$fn=fn);
         
         // hole
         translate([wt,wt,bt])
-            cube_r([x-2*wt,y-2*wt,z],d-2*wt);
+            cube_r([x-2*wt,y-2*wt,z],d-2*wt,$fn=fn);
     }
 }
 
@@ -229,6 +305,23 @@ module box_r(s,d,wt,bt=NAN, center=false)
     _bt = is_num(bt) ? bt : wt;
     _box_r(s.x,s.y,s.z,d,wt,_bt, center);
 }
+
+/* 
+
+// TODO it looks strange
+
+// basic box
+// '-> x,y,z - outer dimensions
+// '-> a - distance of the cut from corners in XY plane
+// '-> wt - wall thickness
+// '-> bt - bottom thickness
+module _box_c(x,y,z,a,wt,bt, center=false)
+{
+    _box_r(x,y,z,2*a,wt,bt, center, fn=4);
+}
+
+_box_c(10,10,10,2,1,1);
+*/
 
 
 ////////////////////////////////////////////////////////////////////////////
