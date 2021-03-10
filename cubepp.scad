@@ -13,6 +13,7 @@
 // Change log
 // '-> 0.0.1 - modules for cube_r and cube_s finalized
 // '-> 0.0.2 - box and box_r added
+// '-> 0.0.2.1 - box and box_r fixed
 // planned
 // '-> cube_c for cube with corners cut of
 
@@ -143,7 +144,8 @@ module cube_s (t,d, center=false)
 // '-> x,y,z - outer dimensions
 // '-> t - wall thickness
 module _box(x,y,z,wt,bt, center=false)
-{
+{   
+    echo(str(x,y,z,wt,bt,center));
     assert(wt>0, str("given wall thickness wt=",wt," must be greater than zero"));
     if (wt!=bt)
     {
@@ -178,7 +180,7 @@ module box(s,wt,bt=NAN, center=false)
 {
     assert(len(s)==3, str("given size vector has size, ", len(s), " but size 3 is required"));
     _bt = is_num(bt) ? bt : wt;
-    _box_r(s.x,s.y,s.z,wt,_bt, center);
+    _box(s.x,s.y,s.z,wt,_bt, center);
 }
 
 // box with corners round in XY plane
@@ -196,9 +198,8 @@ module _box_r(x,y,z,d,wt,bt, center=false)
     
     assert(d>=2*wt, str("given diameter d=",d," must be at least twice of wall thickness wt=", wt));  
    
-    r = d/2;
     // solve center transform
-    tf = center ? [r-x/2,r-y/2,r-z/2] : [0,0,0];
+    tf = center ? [-x/2,-y/2,z/2] : [0,0,0];
     
     translate(tf)
     difference()
