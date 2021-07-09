@@ -9,12 +9,13 @@
 *     cube, see documentation bellow                                                         *
 *********************************************************************************************/
 
-// CURRENT VERSION: 0.0.1
+// CURRENT VERSION: 0.0.4
 // Change log
 // '-> 0.0.1 - modules for cube_r and cube_s finalized
 // '-> 0.0.2 - box and box_r added
 // '-> 0.0.2.1 - box and box_r fixed
 // '-> 0.0.3.0 - cube_c for cube with corners cut of
+// '-> 0.0.4 - adding trapezoid 
 
 // planned
 // solve issue with carved box
@@ -305,6 +306,30 @@ module box_r(s,d,wt,bt=NAN, center=false)
     _bt = is_num(bt) ? bt : wt;
     _box_r(s.x,s.y,s.z,d,wt,_bt, center);
 }
+
+// trapezoid
+// '-> s is the vector of base size [x,y,z]
+// '-> c is vector of side cuts
+module trapezoid(s,c)
+{   
+    _eps = 0.01;
+    _x = s.x;
+    _y = s.y;
+    _z = s.z;
+
+    _cx = c.x;
+    _cy = c.y;
+    hull()
+    {
+        // lower cube
+        cube([_x,_y,_eps]);
+        // upper cube
+        translate([_cx[0],_cy[0],_z-_eps])
+            cube([_x-_cx[0]-_cx[1],_y-_cy[0]-_cy[1],_eps]);
+    }
+
+}
+
 
 /* 
 
