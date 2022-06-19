@@ -43,6 +43,5 @@ echo(str([1,2]," has extract form ", qpp_try_to_unpack_list([1,2])));
 echo(str(2," has extract form ", qpp_try_to_unpack_list(2)));
 */
 
-function qpp_assert_len(arr,arr_name,exp_len=3) = 
-    assert(len(arr)==exp_len,"[QPP-DICE] the '",str(arr_name),"' variable is a list of unacceptable size (", len(arr) ,"), only scalar and list of sizes 1 or ", exp_len, " are accepted.")
-        0;
+function qpp_assert_len_txt(module_name, arr, arr_name,exp_len=3) = 
+    str("[QPP-",str(module_name),"] the '",str(arr_name),"' variable is a list of unacceptable size (", str(len(arr)) ,"), only scalar and list of sizes 1 or ", str(exp_len) , " are accepted.");
