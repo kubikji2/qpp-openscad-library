@@ -1,7 +1,7 @@
 include <qpp_utils.scad>
 include <qpp_unit.scad>
 
-module test_is_valid_3D_list()
+module qpp_test_is_valid_3D_list()
 {
     args = [
             [[1,3,9],1],
@@ -10,14 +10,14 @@ module test_is_valid_3D_list()
             [[1,3,5,4],-1]
            ];
     
-    f = function(x) is_valid_3D_list(x);
-    unit_test_function(fcn=f,data=args);
+    f = function(x) qpp_is_valid_3D_list(x);
+    qpp_unit_test_function(fcn=f,data=args);
     echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
 }
 
-test_is_valid_3D_list();
+qpp_test_is_valid_3D_list();
 
-module test_is_valid_2D_list()
+module qpp_test_is_valid_2D_list()
 {
     args = [
             [[1,3],1],
@@ -26,14 +26,14 @@ module test_is_valid_2D_list()
             [[1,3,5,4],-1]
            ];
     
-    f = function(x) is_valid_2D_list(x);
-    unit_test_function(fcn=f,data=args);
+    f = function(x) qpp_is_valid_2D_list(x);
+    qpp_unit_test_function(fcn=f,data=args);
     echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
 }
 
-test_is_valid_2D_list();
+qpp_test_is_valid_2D_list();
 
-module test_try_to_upack_list()
+module qpp_test_try_to_unpack_list()
 {
     args = [
             [[2],2],
@@ -42,9 +42,9 @@ module test_try_to_upack_list()
             [[1,3,5,4],[1,3,5,4]]
            ];
     
-    f = function(x) try_to_upack_list(x);
-    unit_test_function(fcn=f,data=args);
+    f = function(x) qpp_try_to_unpack_list(x);
+    qpp_unit_test_function(fcn=f,data=args);
     echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
 }
 
-test_try_to_upack_list();
+qpp_test_try_to_unpack_list();
