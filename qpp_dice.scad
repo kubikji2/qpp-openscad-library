@@ -25,7 +25,7 @@ module qpp_dice(size=1, r=0.75, fn=qpp_fn, unsafe_mode=false)
     // check the size and r for strange cases
     if (_is_size_list == 1 && _nonuniform_scale == 0)
     {
-        assert(!unsafe_mode, "[QPP-DICE] using uniform corner radius is not recommended for block. If this is intentional set 'unsafe_mode=true'.")
+        assert(unsafe_mode, "[QPP-DICE] using uniform corner radius is not recommended for block. If this is intentional set 'unsafe_mode=true'.");
     }
 
     // if all parsing succeed, time for computation
@@ -45,13 +45,14 @@ module qpp_dice(size=1, r=0.75, fn=qpp_fn, unsafe_mode=false)
         // create a dice
         intersection()
         {
-            scale([_sx,_sy,_sz]) sphere(r=_min_r, $fn=fn, center=true);
+            scale([_sx,_sy,_sz]) sphere(r=_min_r, $fn=fn);
             cube([_a,_b,_c], center=true);
         }
     }
 
 }
 
-qpp_dice();
-%sphere(r=0.75,$fn=qpp_fn, center=true);
+R = [8,6,8];
+qpp_dice(size=[10,10,10],r=R, unsafe_mode=true);
+scale(R) sphere(r=1,$fn=qpp_fn);
 %cube([1,1,1], center=true);
