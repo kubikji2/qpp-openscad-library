@@ -4,7 +4,7 @@
 // '-> data[0] - list of inputs to fcn
 // '-> data[1] - list of associated expected outputs of fcn
 // input and outputs are conviniently concatanated in single variable for better test design
-module unit_test_function(fcn,data)
+module qpp_unit_test_function(fcn,data)
 {
     //echo(str("is function = ", is_function(fcn)));
     for (c_data=data)
