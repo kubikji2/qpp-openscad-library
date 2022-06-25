@@ -1,6 +1,9 @@
 include <qpp_utils.scad>
 include <qpp_unit.scad>
 
+function test_passed_text(f) =
+    str("[QPP-UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED");
+
 module qpp_test_is_valid_3D_list()
 {
     args = [
@@ -12,7 +15,7 @@ module qpp_test_is_valid_3D_list()
     
     f = function(x) qpp_is_valid_3D_list(x);
     qpp_unit_test_function(fcn=f,data=args);
-    echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
+    echo(test_passed_text(f)); 
 }
 
 qpp_test_is_valid_3D_list();
@@ -28,7 +31,7 @@ module qpp_test_is_valid_2D_list()
     
     f = function(x) qpp_is_valid_2D_list(x);
     qpp_unit_test_function(fcn=f,data=args);
-    echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
+    echo(test_passed_text(f)); 
 }
 
 qpp_test_is_valid_2D_list();
@@ -44,7 +47,7 @@ module qpp_test_try_to_unpack_list()
     
     f = function(x) qpp_try_to_unpack_list(x);
     qpp_unit_test_function(fcn=f,data=args);
-    echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
+    echo(test_passed_text(f)); 
 }
 
 qpp_test_try_to_unpack_list();
@@ -58,7 +61,7 @@ module qpp_test_check_len()
            ];
     f = function(x,y) qpp_check_lens(x,y);
     qpp_unit_test_function(fcn=f,nargs=2,data=args);
-    echo(str("[UNIT-TEST] ALL TESTS for fcn \"", str(f),"\" PASSED")); 
+    echo(test_passed_text(f)); 
 }
 
 qpp_test_check_len();
