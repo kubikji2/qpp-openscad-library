@@ -8,14 +8,6 @@ function _qpp_is_valid_sized_list(size, expected_size) =
         1 :
         is_list(size) ? -1 : 0;
 
-// MINI UNIT TEST
-/*
-echo(str([1,3,9],"~", _qpp_is_valid_sized_list([1,3,9])));
-echo(str(1,"~", _qpp_is_valid_sized_list(1)));
-echo(str([12,2],"~", _qpp_is_valid_sized_list([12,2], expected_size=2)));
-echo(str([1,3,9],"~", _qpp_is_valid_sized_list([1,3,9], expected_size=2)));
-*/
-
 // check variable size, three possible outcomes:
 //  0 if variable size is scalar
 //  1 if variable size is 3D vector
@@ -36,12 +28,14 @@ function qpp_try_to_unpack_list(size) =
         size[0] :
         size;
 
-// MINI UNIT TEST
-/*
-echo(str([2]," has extract form ", qpp_try_to_unpack_list([2])));
-echo(str([1,2]," has extract form ", qpp_try_to_unpack_list([1,2])));
-echo(str(2," has extract form ", qpp_try_to_unpack_list(2)));
-*/
-
-function qpp_assert_len_txt(module_name, arr, arr_name,exp_len=3) = 
+// returns the text for failed list length
+function qpp_assert_len_txt(module_name, arr, arr_name, exp_len=3) = 
     str("[QPP-",str(module_name),"] the '",str(arr_name),"' variable is a list of unacceptable size (", str(len(arr)) ,"), only scalar and list of sizes 1 or ", str(exp_len) , " are accepted.");
+
+// check whether the "cur_len" is list "pos_lens"
+// '-> in case pos_lens is a scalar, the "cur_len" is compared to "pos_lens" directly
+function qpp_check_lens(cur_len, pos_lens) =
+    // echo(str("[QPP-utils] cur_len=",str(cur_len), ", pos_lens", str(pos_lens)))
+    !is_list(pos_lens)
+        ? cur_len == pos_lens
+        : len(search(cur_len,pos_lens)) > 0;
