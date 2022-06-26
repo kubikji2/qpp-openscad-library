@@ -32,6 +32,15 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
         assert( _is_2D || qpp_len(_point) == 3, str(_module_name, " some point in variable \"points\" is not 3D!"));
     }
 
+    // TODO check points orientation using vector product and scalar product
+    // '-> first get normal of the plane using vector product of vecotors (B - A) x (C - A)
+    // '-> second:
+    //     '-> for 3D points get scalar product on normal and the offset vector
+    //     '-> for 2D points create offset vector
+    // '-> lastly compute scalar product on normalized normal and normalized offset vectors
+    //     '-> for scalar product > 0, ok
+    //     '-> for scalar prodcut < 0, there are fucked up orders
+    
     // check off
     assert(is_undef(off) || qpp_len(off)==3, str(_module_name, " variable \"off\" is not 3D vector!"));
     _off = _is_2D ? [0,0,h] : off;
