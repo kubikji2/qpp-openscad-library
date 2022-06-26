@@ -36,11 +36,7 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
     assert(is_undef(off) || qpp_len(off)==3, str(_module_name, " variable \"off\" is not 3D vector!"));
     _off = _is_2D ? [0,0,h] : off;
 
-    //_points = 
-    _n_sides = len(points);
     _points = _is_2D ? [for (_point=points) [_point[0],_point[1], 0] ] : points;
-    //_rev_points = [ for(i=[0:_n_sides-1]) _points[_n_sides-1-i]];
-    //echo(_rev_points);
     // create base and top points
     _3D_points_base = _points;
     //echo(_3D_points_base);
@@ -49,14 +45,22 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 
     // create points
     _3D_points = [for (_point=_3D_points_base) _point, for (_point=_3D_points_top) _point];
-    echo(_3D_points);
+    //echo(_3D_points);
 
     // create facets
+    _n_sides = len(points);
     // '-> create shell
     _shell_idxs = qpp_prism_shell_idx(_n_sides);
     // '-> join base, shell and top into the facet
-    _faces = [ [for(i=[0:_n_sides-1]) i] , each _shell_idxs, [for(i=[0:_n_sides-1]) 2*_n_sides-i-1]];
-    echo(_faces)
+    _faces = [
+                // base
+                [for(i=[0:_n_sides-1]) i],
+                // expanded shell
+                each _shell_idxs,
+                // top, but in inversed order
+                [for(i=[0:_n_sides-1]) 2*_n_sides-i-1]
+             ];
+    //echo(_faces)
 
     // create geometry
     polyhedron(_3D_points, _faces);
