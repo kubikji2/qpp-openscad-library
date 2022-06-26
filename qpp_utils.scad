@@ -59,4 +59,16 @@ function qpp_len_s(array) =
     is_list(array) ?
         str(len(array)) :
         is_undef(array) ?
-            ">undef<" : ">scalar<";    
+            ">undef<" : ">scalar<";
+
+// adding two vectors of the same lenght
+function qpp_add_vec(arr1,arr2) =
+    is_list(arr1) && is_list(arr2) && len(arr1)==len(arr2) ?
+        [for (i=[0:len(arr1)-1]) arr1[i]+arr2[i]] :
+        undef;
+
+// substract two vectors of the same lenght
+function qpp_sub_vec(arr1,arr2) =
+    is_list(arr1) && is_list(arr2) && len(arr1)==len(arr2) ?
+        [for (i=[0:len(arr1)-1]) arr1[i]-arr2[i]] :
+        undef;
