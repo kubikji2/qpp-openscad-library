@@ -22,13 +22,13 @@ module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, $fn=qpp_fn)
     // check xyz and r for definition
     _all_def = !is_undef(xyz) && !is_undef(r);
     _any_undef = is_undef(xyz) || is_undef(r);
-    assert(!_any_undef || _all_def, str(_module_name, " not all variables are defined: \"xyz\"=", str(is_undef(xyz)) ? ">undef<" : str(xyz), " and \"r\"=", str(is_undef(r) ? ">undef<" : str(r)), "!"));
     _use_size = !_all_def;
+    assert(_all_def || !_any_undef, str(_module_name, " not all variables are defined: \"xyz\"=", str(is_undef(xyz)) ? ">undef<" : str(xyz), " and \"r\"=", str(is_undef(r) ? ">undef<" : str(r)), "!"));
 
     // check xyz
     _xyz_u = qpp_try_to_unpack_list(xyz);
     // check xyz length
-    assert(_use_size || qpp_is_valid_3D_list(_xyz_u) != -1, str(_module_name, " variable \"xyz\" has len=", str(is_undef(xyz) ? [0] : len(xyz)), " but only len in [1,3] is allowed!"));
+    assert(_use_size || qpp_is_valid_3D_list(_xyz_u) != -1, str(_module_name, " variable \"xyz\" has len=", qpp_len_s(xyz), " but only len in [1,3] is allowed!"));
     // expand xyz into 3D vector
     _xyz = is_list(_xyz_u) ?
                 _xyz_u :
@@ -37,7 +37,7 @@ module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, $fn=qpp_fn)
     // check r
     _r_u = qpp_try_to_unpack_list(r);
     // check r length
-    assert(_use_size || qpp_is_valid_3D_list(_r_u) != -1, str(_module_name, " variable \"r\" has len=", str(is_undef(r) ? [0] : len(r)), " but only len in [1,3] is allowed!"));
+    assert(_use_size || qpp_is_valid_3D_list(_r_u) != -1, str(_module_name, " variable \"r\" has len=", qpp_len_s(r), " but only len in [1,3] is allowed!"));
     // expand r into 3D vector
     _r = is_list(_r_u) ? 
             _r_u :
