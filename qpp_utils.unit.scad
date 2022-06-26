@@ -65,3 +65,35 @@ module qpp_test_check_len()
 }
 
 qpp_test_check_len();
+
+module qpp_test_len()
+{
+    args = [
+            [[1],1],
+            [1,0],
+            [undef,-1],
+            [[1,2,3],3]
+           ];
+    
+    f = function(x) qpp_len(x);
+    qpp_unit_test_function(fcn=f,data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_len();
+
+module qpp_test_len_s()
+{
+    args = [
+            [[1],"1"],
+            [1,">scalar<"],
+            [undef,">undef<"],
+            [[1,2,3],"3"]
+           ];
+    
+    f = function(x) qpp_len_s(x);
+    qpp_unit_test_function(fcn=f,data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_len_s();
