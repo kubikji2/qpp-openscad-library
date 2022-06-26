@@ -2,21 +2,25 @@ use <qpp_utils.scad>
 use <qpp_tetrahedron.scad>
 include <qpp_constants.scad>
 
+// module used to cut corners
 module _qpp_compose_corner_cut(points,offs,h)
 {
     for(i=[0:3])
     {
+        // select point oposite to the leftout corner
         _peak_idx = (i+2)%4;
-        _cp = points[_peak_idx];
-        _peak_point = [_cp[0],_cp[1],_cp[2]+h];
-        _points = [for(j=[0:3]) if (j != i) points[j], _peak_point];
-        echo(_points);
+        // move peak point to by "h" in z-axis
+        _peak_point = qpp_add_vec(points[_peak_idx],[0,0,h]);
+        // different order is used to handle normals
+        _points = h > 0 ? 
+                    [for(j=[0:3]) if (j != i) points[j], _peak_point] :
+                    [_peak_point, for(j=[0:3]) if (j != i) points[j]];
 
+        // geometry
         translate(offs[i])
             qpp_tetrahedron(points=_points);
     }
 } 
-//    [ for (_point=points) [_point[0]+off[0],_point[1]+off[1],_point[2]+off[2]]];
 
 // this module creaters the corneless cube
 // '-> argument "size" defines the size of the geometry, following options are supported:
@@ -47,7 +51,8 @@ module qpp_cornerlesscube(size=[1,1,1],cut=0.1)
     _cy = _is_non_uniform_cut ? _cut[1] : _cut;
     _cz = _is_non_uniform_cut ? _cut[2] : _cut;
 
-    eps = qpp_eps;
+    // compose cuts coordinates and its offsets
+    eps = 0.001;
     _xy_cuts = [
                 [   -eps,    -eps, -eps],
                 [_cx+eps,    -eps, -eps],
@@ -62,7 +67,19 @@ module qpp_cornerlesscube(size=[1,1,1],cut=0.1)
                 [_x-_cx,      0, 0],
                ];
 
-    _qpp_compose_corner_cut(points=_xy_cuts,offs=_xy_offs,h=_cz);
-    
+    // translate the coordinates and offsets for the top face
+    _xy_offs_tops = [for(_point=_xy_offs) qpp_add_vec(_point,[0,0,_z])];
+    _xy_cuts_tops = [for(_point=_xy_cuts) qpp_add_vec(_point,[0,0,2*eps])];
+
+    // construct the guoemetry
+    difference()
+    {
+        // basic shape
+        cube([_x,_y,_z]);
+        // lower cuts
+        _qpp_compose_corner_cut(points=_xy_cuts,offs=_xy_offs,h=_cz+eps);
+        // upper cuts
+        _qpp_compose_corner_cut(points=_xy_cuts_tops,offs=_xy_offs_tops,h=-_cz-eps);
+    }
     
 }
