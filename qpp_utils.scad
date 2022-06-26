@@ -39,3 +39,24 @@ function qpp_check_lens(cur_len, pos_lens) =
     !is_list(pos_lens)
         ? cur_len == pos_lens
         : len(search(cur_len,pos_lens)) > 0;
+
+// safe implementation of length applicable to:
+// - list/vectors -> return its length
+// - scalars      -> returns 0
+// - >undef<      -> returns -1 
+// NOTE: use this to avoid warning in asserts...
+function qpp_len(array) =
+    is_list(array) ?
+        len(array) :
+        is_undef(array) ?
+            -1 : 0;
+
+// text representation of qpp_len:
+// - list/vectors -> return its length as strin
+// - scalars      -> returns ">scalar<"
+// - >undef<      -> returns ">undef<"
+function qpp_len_s(array) = 
+    is_list(array) ?
+        str(len(array)) :
+        is_undef(array) ?
+            ">undef<" : ">scalar<";    
