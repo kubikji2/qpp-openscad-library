@@ -70,11 +70,11 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 
 }
 
-// module for creating vertical prisms
+// module for creating vertical prisms with rounded corners in xy-plane
 // '-> variable "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
 // '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" define diameter and radius respectively
+// '-> variable "d" or "r" define rounding diameter and radius respectively
 // NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
@@ -112,7 +112,13 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
     }
 }
 
-
+// module for creating vertical prisms with corners rounded in all axis
+// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+//     '-> points are expected to be 2D, or 3D (see case below)
+// '-> variable "h" is the height of the prism in z-axis
+// '-> variable "d" or "r" define rounding diameter and radius respectively
+// NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
+//       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
 {
     // module name
