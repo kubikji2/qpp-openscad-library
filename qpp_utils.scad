@@ -97,3 +97,10 @@ function qpp_dot_vec(v1, v2, _i = 0, _dot = 0) =
             _dot :
         undef; // TODO: handle scalar-equivalent and scalar values
 
+
+// creates vector between from and to points
+// '-> valid iff 'from' and 'to' points of same dimensions
+function qpp_pts2vec(from,to) = 
+    _qpp_comp_arrs(from,to) ?
+        [for (_i=[0:len(to)-1]) to[_i]-from[_i] ] :
+        undef;

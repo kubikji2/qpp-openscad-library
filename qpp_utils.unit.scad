@@ -172,3 +172,21 @@ module qpp_test_dot_vec()
 }
 
 qpp_test_dot_vec();
+
+module qpp_test_pts2vec()
+{
+    args = [
+            [0,1, undef],
+            [1,[2], undef],
+            [[1,1,1],[1,1], undef],
+            [[1,1,1],[1,1,1],[0,0,0]],
+            [[1,1,1],[1,2,3],[0,1,2]],
+            [[1,2,3],[1,2,0],[0,0,-3]],
+           ];
+
+    f = function(x,y) qpp_pts2vec(x,y);
+    qpp_unit_test_function(fcn=f, data=args, nargs=2);
+    echo(test_passed_text(f));
+}
+
+qpp_test_pts2vec();
