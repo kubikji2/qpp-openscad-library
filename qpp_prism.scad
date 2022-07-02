@@ -32,6 +32,8 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
         assert( _is_2D || qpp_len(_point) == 3, str(_module_name, " some point in variable \"points\" is not 3D!"));
     }
 
+    // TODO check self-intersection
+    
     // check off
     assert(is_undef(off) || qpp_len(off)==3, str(_module_name, " variable \"off\" is not 3D vector!"));
     _off = _is_2D ? [0,0,h] : off;
