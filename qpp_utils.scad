@@ -104,3 +104,7 @@ function qpp_pts2vec(from,to) =
     _qpp_comp_arrs(from,to) ?
         [for (_i=[0:len(to)-1]) to[_i]-from[_i] ] :
         undef;
+
+// cross product wrapper
+// '-> no unit test
+function qpp_cross_vec(v1,v2) = cross(v1,v2);
