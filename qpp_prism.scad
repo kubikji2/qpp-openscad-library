@@ -157,23 +157,23 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
 // module for regular prism
 // '-> variable "n_sides" defines number of regular polygon used as prism base
 // '-> variable "h" is the height of the regular prism in z-axis
-// '-> variable "d" or "r" define the diameter and radius of the base incircled/excircled circle.
-module qpp_regular_prism(n_sides=5, h=1, r=0.5, d=undef, incircle=true)
+// '-> variable "D" or "R" define the diameter and radius of the base incircled/excircled circle.
+module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, incircle=true, __module_name="[QPP-regular_prism]")
 {
-    _module_name = "[QPP-regular_prism]";
+    _module_name = __module_name;
     
     // check number of sides
     assert(n_sides >= 3, str(_module_name, " variable \"n_sides\" must be at least three!"));
 
     // get radius
-    __r = is_undef(d) ? r : d/2;
+    __r = is_undef(D) ? R : D/2;
     // check radius
-    assert(__r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    assert(__r >= 0, str(_module_name, " variable \"R\", neither \"D\" can be negative!"));
 
     // compute radius
     _r = incircle ? __r : __r/(cos(360/(2*n_sides)));
 
     // base shape
     cylinder(r=_r, h=h,$fn=n_sides);
-    
+
 }
