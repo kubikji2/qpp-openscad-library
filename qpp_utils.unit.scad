@@ -48,7 +48,7 @@ module qpp_test_try_to_unpack_list()
            ];
     
     f = function(x) qpp_try_to_unpack_list(x);
-    qpp_unit_test_function(fcn=f,data=args);
+    qpp_unit_test_function(fcn=f, data=args);
     echo(test_passed_text(f)); 
 }
 
@@ -63,7 +63,7 @@ module qpp_test_check_len()
             [2,[2],true]
            ];
     f = function(x,y) qpp_check_lens(x,y);
-    qpp_unit_test_function(fcn=f,nargs=2,data=args);
+    qpp_unit_test_function(fcn=f, nargs=2, data=args);
     echo(test_passed_text(f)); 
 }
 
@@ -80,7 +80,7 @@ module qpp_test_len()
            ];
     
     f = function(x) qpp_len(x);
-    qpp_unit_test_function(fcn=f,data=args);
+    qpp_unit_test_function(fcn=f, data=args);
     echo(test_passed_text(f));
 }
 
@@ -97,7 +97,7 @@ module qpp_test_len_s()
            ];
     
     f = function(x) qpp_len_s(x);
-    qpp_unit_test_function(fcn=f,data=args);
+    qpp_unit_test_function(fcn=f, data=args);
     echo(test_passed_text(f));
 }
 
@@ -115,7 +115,7 @@ module qpp_test_add_vec()
     ];
 
     f = function(x,y) qpp_add_vec(x,y);
-    qpp_unit_test_function(fcn=f,data=args,nargs=2);
+    qpp_unit_test_function(fcn=f, data=args, nargs=2);
     echo(test_passed_text(f));
 }
 
@@ -133,10 +133,42 @@ module qpp_test_sub_vec()
     ];
 
     f = function(x,y) qpp_sub_vec(x,y);
-    qpp_unit_test_function(fcn=f,data=args,nargs=2);
+    qpp_unit_test_function(fcn=f, data=args, nargs=2);
     echo(test_passed_text(f));
 }
 
 qpp_test_sub_vec();
 
+module qpp_test_sum_vec()
+{
+    args = [
+            [0,undef],
+            [[1,2,4], 7],
+            [[1,-1,0], 0],
+            [[-2,3,-4], -3]
+           ];
 
+    f = function(x) qpp_sum_vec(x);
+    qpp_unit_test_function(fcn=f, data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_sum_vec();
+
+module qpp_test_dot_vec()
+{
+    args = [
+            [0,1, undef],
+            [1,[2], undef],
+            [[1,1,1],[1,1], undef],
+            [[1,1,1],[1,1,1],3],
+            [[1,1,1],[1,2,3],6],
+            [[1,2,3],[1,2,0],5],
+           ];
+
+    f = function(x,y) qpp_dot_vec(x,y);
+    qpp_unit_test_function(fcn=f, data=args, nargs=2);
+    echo(test_passed_text(f));
+}
+
+qpp_test_dot_vec();
