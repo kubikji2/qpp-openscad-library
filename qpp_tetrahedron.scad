@@ -16,7 +16,7 @@ module qpp_tetrahedron(points=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
         assert(is_list(_point) &&  qpp_len(_point) == 3, str(_module_name, " some of the points are not 3D!"));
     }
 
-    // TODO check righ-hand rules similar to the prism module
+    // TODO handle self-intersection
 
     // compose points
     _points = points;
