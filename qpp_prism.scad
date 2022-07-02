@@ -1,3 +1,4 @@
+include <qpp_constants.scad>
 use <qpp_utils.scad>
 
 // generate prism shell idx based on the total number of sides
@@ -67,4 +68,88 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
     // create geometry
     polyhedron(_3D_points, _faces);
 
+}
+
+// module for creating vertical prisms with rounded corners in xy-plane
+// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+//     '-> points are expected to be 2D, or 3D (see case below)
+// '-> variable "h" is the height of the prism in z-axis
+// '-> variable "d" or "r" define rounding diameter and radius respectively
+// NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
+//       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
+module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-cylindroprism]";
+    
+    // check points similar to qpp_prism
+    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+
+    // check points dimension size
+    for(_point=points)
+    {
+        assert(qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
+    }
+
+    // get radius
+    _r = is_undef(d) ? r : d/2;
+    // check radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // height
+    _h_cylinder = h/5;
+    _h_prism = h - _h_cylinder;
+
+    minkowski()
+    {
+        // base prism
+        linear_extrude(_h_prism)
+            offset(r=-_r)
+                polygon(points=points);
+        // cylinder
+        cylinder(r=_r,h=_h_cylinder,$fn=$fn);
+    }
+}
+
+// module for creating vertical prisms with corners rounded in all axis
+// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+//     '-> points are expected to be 2D, or 3D (see case below)
+// '-> variable "h" is the height of the prism in z-axis
+// '-> variable "d" or "r" define rounding diameter and radius respectively
+// NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
+//       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
+module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-cylindroprism]";
+    
+    // check points similar to qpp_prism
+    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+
+    // check points dimension size
+    for(_point=points)
+    {
+        assert(qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
+    }
+
+    // get radius
+    _r = is_undef(d) ? r : d/2;
+    // check radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // height
+    _h_prism = h - 2*_r;
+
+    translate([0,0,_r])
+        minkowski()
+        {
+            // base prism
+            linear_extrude(_h_prism)
+                offset(r=-_r)
+                    polygon(points=points);
+            // cylinder
+            sphere(r=_r,$fn=$fn);
+        }
 }
