@@ -1,3 +1,4 @@
+include <qpp_constants.scad>
 use <qpp_utils.scad>
 
 // generate prism shell idx based on the total number of sides
@@ -67,4 +68,27 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
     // create geometry
     polyhedron(_3D_points, _faces);
 
+}
+
+module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-cylindroprism]";
+    
+    // get radius
+    _r = is_undef(d) ? r : d/2;
+
+    // height
+    _h_cylinder = h/5;
+    _h_prism = h - _h_cylinder;
+
+    minkowski()
+    {
+        // base prism
+        linear_extrude(_h_prism)
+            offset(r=-_r)
+                polygon(points=points);
+        // cylinder
+        cylinder(r=_r,h=_h_cylinder,$fn=$fn);
+    }
 }
