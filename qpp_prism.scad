@@ -94,6 +94,7 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
 
     // get radius
     _r = is_undef(d) ? r : d/2;
+    // check radius
     assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
 
     // height
@@ -109,4 +110,40 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
         // cylinder
         cylinder(r=_r,h=_h_cylinder,$fn=$fn);
     }
+}
+
+
+module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-cylindroprism]";
+    
+    // check points similar to qpp_prism
+    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+
+    // check points dimension size
+    for(_point=points)
+    {
+        assert(qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
+    }
+
+    // get radius
+    _r = is_undef(d) ? r : d/2;
+    // check radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // height
+    _h_prism = h - 2*_r;
+
+    translate([0,0,_r])
+        minkowski()
+        {
+            // base prism
+            linear_extrude(_h_prism)
+                offset(r=-_r)
+                    polygon(points=points);
+            // cylinder
+            sphere(r=_r,$fn=$fn);
+        }
 }
