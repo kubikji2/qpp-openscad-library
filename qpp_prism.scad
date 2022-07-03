@@ -159,9 +159,11 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
 // '-> variable "h" is the height of the regular prism in z-axis
 // '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
 // '-> variable "side" is a length of the the regular prism base side
+// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
 // TODO: add optional tip with given height "ht"
-module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=true, __module_name="[QPP-regular_prism]")
+module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=true, align_along_x = true, __module_name="[QPP-regular_prism]")
 {
+    // module name
     _module_name = __module_name;
     
     // check number of sides
@@ -182,9 +184,11 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
             (side/2)/sin(360/(2*n_sides)) : 
             incircle ? __r : __r/(cos(360/(2*n_sides)));
 
-    // base shape
-    cylinder(r=_r, h=h,$fn=n_sides);
-
+    // handle rotation alignment
+    _z_rot = align_along_x ? -90-360/(2*n_sides) : 0;
+    rotate([0,0, _z_rot])
+        // base shape
+        cylinder(r=_r, h=h,$fn=n_sides);
 }
 
 // module for regular prism with corners rounded in all axis
@@ -197,6 +201,7 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
 // TODO: add optional tip with given height "ht"
 module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, $fn=qpp_fn)
 {
+    // module name
     _module_name = "[QPP-regular_sphreroprism]";
     
     // compute radius
@@ -211,6 +216,7 @@ module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1
     _D = is_undef(D) ? D : D-2*_r_diff;
     _h = h - 2*_r;
 
+    // crreating shape using minkowski sum 
     minkowski()
     {
         // basic shape
