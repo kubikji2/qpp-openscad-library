@@ -21,10 +21,9 @@ module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, $fn=qpp_fn)
     
     // check xyz and r for definition
     _all_def = !is_undef(xyz) && !is_undef(r);
-    _any_undef = is_undef(xyz) || is_undef(r);
     _use_size = !_all_def;
-    assert(_all_def || !_any_undef, str(_module_name, " not all variables are defined: \"xyz\"=", str(is_undef(xyz)) ? ">undef<" : str(xyz), " and \"r\"=", str(is_undef(r) ? ">undef<" : str(r)), "!"));
-
+    assert(is_undef(xyz) == is_undef(r), str(_module_name, " not all variables are defined: \"xyz\"=", str(is_undef(xyz)) ? ">undef<" : str(xyz), " and \"r\"=", str(is_undef(r) ? ">undef<" : str(r)), "!"));
+    
     // check xyz
     _xyz_u = qpp_try_to_unpack_list(xyz);
     // check xyz length
