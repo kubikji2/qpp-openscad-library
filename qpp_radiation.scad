@@ -1,50 +1,59 @@
-module branch(heig,diam,out_rat,fn=$fn){
-    difference(){
-    cylinder(h=heig, d=diam,$fn=fn);
-    translate([0, -diam,0]) cube([diam,2*diam,2*heig]);
-    rotate([0,0,120]) translate([0, -diam,0]) cube([diam,2*diam,2*heig]);
-    cylinder(h=2*heig, d=(1-out_rat)*diam, $fn=fn);
+include<qpp_constants.scad>
+
+// constants from law about biohazzard law:
+// https://law.resource.org/pub/us/cfr/ibr/002/ansi.z35.1.1968.html
+
+__qpp_rad_Rf = 1;
+__qpp_rad_rf = 0.3;
+__qpp_rad__rf = 0.2;
+__qpp_rad_angles = [0,120,240];
+
+// single radiation fin
+module __qpp_rad_fin(r, h, $fn=$fn)
+{
+    _d = 2*r;
+    difference()
+    {
+        // basic shape
+        cylinder(h=h, r=__qpp_rad_Rf*r,$fn=$fn);
+        // cut half of the circle off
+        translate([0, -_d,-qpp_eps])
+            cube([_d,2*_d,h+2*qpp_eps]);
+        // cut 120° segment of circle
+        rotate([0,0,120])
+            translate([0, -_d,-qpp_eps])
+                cube([_d,2*_d,h+2*qpp_eps]);
+        // inner cut
+        translate([0,0,-qpp_eps])
+            cylinder(h=h+2*qpp_eps, r=__qpp_rad_rf*r, $fn=$fn);
     }
 }
 
-module radiation(diam = 100, heig = 2, out_rat = 0.25, in_rat = 0.2,fn = $fn){
+// radiation symbol based on the US law
+// '-> varible "r" or "d" defines symbol radius or diameter respectively
+// '-> variable "h" define the height of the symbol
+// '-> variable "$fn" is just regular $fn
+module qpp_radiation_symbol(r=0.5, d=undef, h=0.1, $fn=qpp_fn)
+{
 
-    branch(heig,diam,out_rat,fn);
-    rotate([0,0,120]) branch(heig,diam,out_rat,fn);
-    rotate([0,0,240]) branch(heig,diam,out_rat,fn);
-    
-    cylinder(d = in_rat*diam, heig,$fn=fn);
+    _module_name = "[QPP-radiation-symbol]";
+
+    // radius/diameter
+    _r = is_undef(d) ? r : d/2;
+    assert(_r > 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // height
+    _h = h;
+    assert(_h >= 0, str(_module_name, " variable \"h\" cannot be negative!"));
+
+    // radiation fins
+    for (_a=__qpp_rad_angles)
+    {
+        rotate([0,0,_a])
+            __qpp_rad_fin(_r,_h,$fn);
+    }
+
+    // inner cylinder
+    cylinder(r=_r*__qpp_rad__rf, _h, $fn=$fn);
     
 }
-
-module buttom(heigh = 2,diam=100,border_rad=5,fn = $fn){
-   translate([0,0,-heigh]) cylinder(d=diam+2*(border_rad), heigh);
-}
-module border(heigh = 2,diam=100,border=3,border_offset=2, fn = $fn){
-        difference(){
-            cylinder(d=diam+2*(border+border_offset), heigh, $fn = fn);
-            cylinder(d=diam+2*(border_offset), heigh, $fn = fn);
-            }
-    
-}
- /*
-radiation();
-buttom();
-border();
-
-*/
-
-module radiationSign(radiation_diameter = 85, radiation_height = 2, radiation_ration = 0.70, radiation_inner_ratio = 0.2,  lower_plate_heigh = 2, border_thickness = 3, border_offset = 2, border_heigh = 2, fn = $fn){
-    
-    $fn = fn;
-    
-    radiation(radiation_diameter, radiation_height, radiation_ration, radiation_inner_ratio, fn);
-    
-    buttom(lower_plate_heigh, radiation_diameter, border_thickness + border_offset,fn);
-    border(border_heigh, radiation_diameter, border_thickness, border_offset,fn);
-    
-    
-}
-
-$fn=250;
-radiationSign(radiation_fn=250);
