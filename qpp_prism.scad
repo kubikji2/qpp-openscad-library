@@ -195,9 +195,30 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
 // '-> variable "d" or "r" defines rounding diameter or radius respectively
 // TODO: make "d" and "r" to possibly be 2D array
 // TODO: add optional tip with given height "ht"
-module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true)
+module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, $fn=qpp_fn)
 {
+    _module_name = "[QPP-regular_sphreroprism]";
+    
+    // compute radius
+    _r = is_undef(d) ? r : d/2;
 
+    // check the rounding radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // compute new _R and _D
+    _r_diff = _r/(cos(360/(2*n_sides)));
+    _R = R - _r_diff;
+    _D = is_undef(D) ? D : D-2*_r_diff;
+    _h = h - 2*_r;
+
+    minkowski()
+    {
+        // basic shape
+        translate([0,0,_r])
+            qpp_regular_prism(n_sides=n_sides, h=_h, R=_R, D=_D, side=side, incircle=incircle);
+        // sphere
+        sphere(r=_r, $fn=$fn);
+    }
 }
 
 // module for regular prism with corners rounded in xy-axis
