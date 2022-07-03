@@ -1,7 +1,3 @@
-// ===========================================
-// (c) 2018 by Jiri Kubik (jiri.kub@gmail.com)
-// ===========================================
-
 include<qpp_constants.scad>
 
 // constants from law about biohazzard law:
