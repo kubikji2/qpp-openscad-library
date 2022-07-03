@@ -174,7 +174,8 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
     __r = is_undef(D) ? R : D/2;
     
     // check radius
-    assert(_using_side || __r >= 0, str(_module_name, " variable \"R\", neither \"D\" can be negative!"));
+    assert( _using_side ||  __r >= 0, str(_module_name, " variable \"R\", neither \"D\" can be negative!"));
+    assert(!_using_side || side >= 0, str(_module_name, " variable \"side\" cannot be negative!"));
 
     // compute radius
     _r = _using_side ?
