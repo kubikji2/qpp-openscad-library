@@ -74,7 +74,7 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 // '-> variable "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
 // '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" define rounding diameter and radius respectively
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
 // NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
@@ -116,7 +116,7 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
 // '-> variable "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
 // '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" define rounding diameter and radius respectively
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
 // NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
@@ -157,8 +157,9 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
 // module for regular prism
 // '-> variable "n_sides" defines number of regular polygon used as prism base
 // '-> variable "h" is the height of the regular prism in z-axis
-// '-> variable "D" or "R" define the diameter and radius of the base incircled/excircled circle.
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
 // '-> variable "side" is a length of the the regular prism base side
+// TODO: add optional tip with given height "ht"
 module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=true, __module_name="[QPP-regular_prism]")
 {
     _module_name = __module_name;
@@ -182,5 +183,31 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
 
     // base shape
     cylinder(r=_r, h=h,$fn=n_sides);
+
+}
+
+// module for regular prism with corners rounded in all axis
+// '-> variable "n_sides" defines number of regular polygon used as prism base
+// '-> variable "h" is the height of the regular prism in z-axis
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> variable "side" is a length of the the regular prism base side
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
+// TODO: make "d" and "r" to possibly be 2D array
+// TODO: add optional tip with given height "ht"
+module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true)
+{
+
+}
+
+// module for regular prism with corners rounded in xy-axis
+// '-> variable "n_sides" defines number of regular polygon used as prism base
+// '-> variable "h" is the height of the regular prism in z-axis
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> variable "side" is a length of the the regular prism base side
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
+// TODO: make "d" and "r" to possibly be 2D array
+// TODO: add optional tip with given height "ht"
+module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true)
+{
 
 }
