@@ -20,6 +20,7 @@ module qpp_test_is_valid_3D_list()
 
 qpp_test_is_valid_3D_list();
 
+
 module qpp_test_is_valid_2D_list()
 {
     args = [
@@ -35,6 +36,7 @@ module qpp_test_is_valid_2D_list()
 }
 
 qpp_test_is_valid_2D_list();
+
 
 module qpp_test_try_to_unpack_list()
 {
@@ -52,6 +54,7 @@ module qpp_test_try_to_unpack_list()
 
 qpp_test_try_to_unpack_list();
 
+
 module qpp_test_check_len()
 {
     args = [
@@ -65,3 +68,75 @@ module qpp_test_check_len()
 }
 
 qpp_test_check_len();
+
+
+module qpp_test_len()
+{
+    args = [
+            [[1],1],
+            [1,0],
+            [undef,-1],
+            [[1,2,3],3]
+           ];
+    
+    f = function(x) qpp_len(x);
+    qpp_unit_test_function(fcn=f,data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_len();
+
+
+module qpp_test_len_s()
+{
+    args = [
+            [[1],"1"],
+            [1,">scalar<"],
+            [undef,">undef<"],
+            [[1,2,3],"3"]
+           ];
+    
+    f = function(x) qpp_len_s(x);
+    qpp_unit_test_function(fcn=f,data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_len_s();
+
+
+module qpp_test_add_vec()
+{
+    args = [
+            [[1,2],[1],undef],
+            [[1,2],1,undef],
+            [[1,2],[11,2,3],undef],
+            [[1,2,3],[3,2,1],[4,4,4]],
+            [[1,2],[1,2],[2,4]]    
+    ];
+
+    f = function(x,y) qpp_add_vec(x,y);
+    qpp_unit_test_function(fcn=f,data=args,nargs=2);
+    echo(test_passed_text(f));
+}
+
+qpp_test_add_vec();
+
+
+module qpp_test_sub_vec()
+{
+    args = [
+            [[1,2],[1],undef],
+            [[1,2],1,undef],
+            [[1,2],[11,2,3],undef],
+            [[1,2,3],[3,2,1],[-2,0,2]],
+            [[1,2],[1,2],[0,0]]    
+    ];
+
+    f = function(x,y) qpp_sub_vec(x,y);
+    qpp_unit_test_function(fcn=f,data=args,nargs=2);
+    echo(test_passed_text(f));
+}
+
+qpp_test_sub_vec();
+
+
