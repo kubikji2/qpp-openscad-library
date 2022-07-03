@@ -19,13 +19,18 @@ __qpp_bio_angles = [90,210,330];
 
 module __qpp_bio_outer_ring(sf=1, h=1)
 {
+    _C = sf*__qpp_bio_C;
+    _E = sf*__qpp_bio_E;
+    _G = sf*__qpp_bio_G;
+    _H = sf*__qpp_bio_H;
+
     difference(){
-        translate([sf*__qpp_bio_E,0,0])
-            cylinder(d=sf*__qpp_bio_H, h=h);
+        translate([_E,0,0])
+            cylinder(d=_H, h=h);
         // the outer most cubioid cuts
-        translate([sf*__qpp_bio_G,0,0-qpp_eps])
-            translate([sf*__qpp_bio_C/2,-sf*__qpp_bio_C/2,0])
-                cube([sf*__qpp_bio_C,sf*__qpp_bio_C,h+2*qpp_eps]);
+        translate([_G,0,0-qpp_eps])
+            translate([_C/2,-_C/2,0])
+                cube([_C,_C,h+2*qpp_eps]);
     }
 }
 
@@ -33,11 +38,14 @@ module __qpp_bio_outer_ring(sf=1, h=1)
 // the outer cylindrical cuts
 module __qpp_bio_main_body_holes(sf=1, h=1)
 {
+    _F = sf*__qpp_bio_F;
+    _G = sf*__qpp_bio_G;
+
     for (_a=__qpp_bio_angles)
     {
         rotate([0,0,_a])
-            translate([sf*__qpp_bio_F,0,-qpp_eps])
-                cylinder(d=sf*__qpp_bio_G,h=h+qpp_eps);
+            translate([_F,0,-qpp_eps])
+                cylinder(d=_G,h=h+qpp_eps);
     }
 }
 
@@ -53,45 +61,57 @@ module __qpp_bio_main_body(sf=1,h=1)
 }
 
 
-module __qpp_bio_outer_tentacles(scale=1,height=1)
+module __qpp_bio_outer_tentacles(sf=1,h=1)
 {
     difference()
     {
-        __qpp_bio_main_body(scale,height);
-        __qpp_bio_main_body_holes(scale,height+2*qpp_eps);
+        __qpp_bio_main_body(sf,h);
+        __qpp_bio_main_body_holes(sf,h+2*qpp_eps);
     }
 }
 
 
 module __qpp_bio_inner_cut(sf=1,h=1)
-{    
+{   
+    _A = sf*__qpp_bio_A;
+    _D = sf*__qpp_bio_D;
+
     translate([0,0,-qpp_eps])
-        cylinder(d=sf*__qpp_bio_D,h=h);
+        cylinder(d=_D,h=h);
     
     for (_a=__qpp_bio_angles)
     {
         rotate([0,0,_a-90])
-            translate([-sf*(__qpp_bio_A/2),0,-qpp_eps])
-                cube([sf*__qpp_bio_A,sf*__qpp_bio_D,h]);
+            translate([-_A/2,0,-qpp_eps])
+                cube([_A,_D,h]);
     }
 }
 
 
 module __qpp_bio_inner_ring(sf=1,h=1,dr=0)
 {
-    outer=sf*(__qpp_bio_E-__qpp_bio_A+__qpp_bio_B)+dr;
-    inner=sf*(__qpp_bio_E-__qpp_bio_A)-dr;
+    
+    _A = sf*__qpp_bio_A;
+    _B = sf*__qpp_bio_B;
+    _E = sf*__qpp_bio_E;
+
+    _outer=_E-_A+_B+dr;
+    _inner=_E-_A-dr;
     difference()
     {
-        cylinder(r=outer,h=h);
+        cylinder(r=_outer,h=h);
         translate([0,0,-qpp_eps])
-        cylinder(r=inner,h=h+2*qpp_eps);
+        cylinder(r=_inner,h=h+2*qpp_eps);
     }
 }
 
 
 module __qpp_bio_middle_ring(sf=1,h=1)
 {
+
+    _A = sf*__qpp_bio_A;
+    _F = sf*__qpp_bio_F;
+    _G = sf*__qpp_bio_G;
 
     difference()
     {
@@ -109,8 +129,8 @@ module __qpp_bio_middle_ring(sf=1,h=1)
             // ... the cut the circles
             for(_a=__qpp_bio_angles){
                 rotate([0,0,_a])
-                    translate([sf*__qpp_bio_F,0,-2*qpp_eps])
-                        cylinder(d=sf*(__qpp_bio_G-2*__qpp_bio_A),h=h+4*qpp_eps);
+                    translate([_F,0,-2*qpp_eps])
+                        cylinder(d=_G-2*_A,h=h+4*qpp_eps);
             }
         }
     }
