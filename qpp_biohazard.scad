@@ -140,10 +140,20 @@ module __qpp_bio_middle_ring(sf=1, h=1, $fn=$fn)
 // '-> variable "r" defines the total radius of the symbol
 // '-> variable "h" defines the height of the logo
 // '-> variable "$fn" is just regular $fn
-module qpp_biohazard_symbol(r=10, h=1, $fn=qpp_fn)
+module qpp_biohazard_symbol(r=0.5, d=undef, h=0.1, $fn=qpp_fn)
 {
-    _sf = r/(__qpp_bio_E+__qpp_bio_H/2);
+    
+    _module_name = "[QPP-biohazard-symbol]";
+    
+    // radius/diameter
+    _r = is_undef(d) ? r : d/2;
+    assert(_r > 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    _sf = _r/(__qpp_bio_E+__qpp_bio_H/2);
+    
+    // height
     _h = h;
+    assert(_h >= 0, str(_module_name, " variable \"h\" cannot be negative!"));
+    
     difference()
     {
         __qpp_bio_tentacles(_sf,_h,$fn);
