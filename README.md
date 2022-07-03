@@ -38,19 +38,19 @@ Features that are planned for the library and its development state.
 
 ### Shapes and logos
 
-- [ ] radiation logo
-- [ ] biohazard logo
+- [x] radiation logo
+- [x] biohazard logo
 
 ### Features
 
 - [ ] make all geometries alignable to center in xyz and to center in xy-plane
-  - TODO: define reasonable and unified interface
+  - TODO: define a reasonable and unified interface
 - [ ] debug utilities
   - [ ] coordinate frame - for transforms
 - [ ] create functions to get transform (translation and rotation) to the center of each side, edge, and corner of geometries given its parameters.
   - [ ] basic geometries
   - [ ] implement for basic geometries equivalents (cylindrocubes, spherocubes...)
-  - [ ] implement for non-basic geometries (prisms, pyramid,...)
+  - [ ] implement for non-basic geometries (prisms, pyramids,...)
 - [ ] create modules for shell-like geometries
 - [ ] create modules for box-like geometries including the lid and the box itself
 - [ ] create patterns generators for pattern cutters
