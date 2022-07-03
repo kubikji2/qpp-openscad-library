@@ -198,7 +198,6 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
 // '-> variable "side" is a length of the the regular prism base side
 // '-> variable "d" or "r" defines rounding diameter or radius respectively
 // '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
-// TODO: make "d" and "r" to possibly be 2D array
 // TODO: add optional tip with given height "ht"
 module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
 {
@@ -206,6 +205,7 @@ module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1
     _module_name = "[QPP-regular_sphreroprism]";
     
     // compute radius
+    // TODO: make "d" and "r" to possibly be 2D array
     _r = is_undef(d) ? r : d/2;
 
     // check the rounding radius
@@ -235,7 +235,6 @@ module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1
 // '-> variable "side" is a length of the the regular prism base side
 // '-> variable "d" or "r" defines rounding diameter or radius respectively
 // '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
-// TODO: make "d" and "r" to possibly be 2D array
 // TODO: add optional tip with given height "ht"
 module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
 {
@@ -243,6 +242,7 @@ module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0
     _module_name = "[QPP-regular_cylindroprism]";
     
     // compute radius
+    // TODO: make "d" and "r" to possibly be 2D array
     _r = is_undef(d) ? r : d/2;
 
     // check the rounding radius
