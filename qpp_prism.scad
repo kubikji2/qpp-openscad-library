@@ -74,7 +74,7 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 // '-> variable "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
 // '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" define rounding diameter and radius respectively
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
 // NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
@@ -116,7 +116,7 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
 // '-> variable "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
 // '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" define rounding diameter and radius respectively
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
 // NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
@@ -152,4 +152,115 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
             // cylinder
             sphere(r=_r,$fn=$fn);
         }
+}
+
+// module for regular prism
+// '-> variable "n_sides" defines number of regular polygon used as prism base
+// '-> variable "h" is the height of the regular prism in z-axis
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> variable "side" is a length of the the regular prism base side
+// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// TODO: add optional tip with given height "ht"
+module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=true, align_along_x=true, __module_name="[QPP-regular_prism]")
+{
+    // module name
+    _module_name = __module_name;
+    
+    // check number of sides
+    assert(n_sides >= 3, str(_module_name, " variable \"n_sides\" must be at least three!"));
+
+    // get side
+    _using_side = !is_undef(side);
+
+    // get radius
+    __r = is_undef(D) ? R : D/2;
+    
+    // check radius
+    assert( _using_side ||  __r >= 0, str(_module_name, " variable \"R\", neither \"D\" can be negative!"));
+    assert(!_using_side || side >= 0, str(_module_name, " variable \"side\" cannot be negative!"));
+
+    // compute radius
+    _r = _using_side ?
+            (side/2)/sin(360/(2*n_sides)) : 
+            incircle ? __r : __r/(cos(360/(2*n_sides)));
+
+    // handle rotation alignment
+    _z_rot = align_along_x ? -90-360/(2*n_sides) : 0;
+    rotate([0,0, _z_rot])
+        // base shape
+        cylinder(r=_r, h=h,$fn=n_sides);
+}
+
+// module for regular prism with corners rounded in all axis
+// '-> variable "n_sides" defines number of regular polygon used as prism base
+// '-> variable "h" is the height of the regular prism in z-axis
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> variable "side" is a length of the the regular prism base side
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
+// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// TODO: make "d" and "r" to possibly be 2D array
+// TODO: add optional tip with given height "ht"
+module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-regular_sphreroprism]";
+    
+    // compute radius
+    _r = is_undef(d) ? r : d/2;
+
+    // check the rounding radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // compute new _R and _D
+    _r_diff = _r/(cos(360/(2*n_sides)));
+    _R = R - _r_diff;
+    _D = is_undef(D) ? D : D-2*_r_diff;
+    _h = h - 2*_r;
+
+    // crreating shape using minkowski sum 
+    minkowski()
+    {
+        // basic shape
+        translate([0,0,_r])
+            qpp_regular_prism(n_sides=n_sides, h=_h, R=_R, D=_D, side=side, incircle=incircle, align_along_x=align_along_x, __module_name=_module_name);
+        // sphere
+        sphere(r=_r, $fn=$fn);
+    }
+}
+
+// module for regular prism with corners rounded in xy-axis
+// '-> variable "n_sides" defines number of regular polygon used as prism base
+// '-> variable "h" is the height of the regular prism in z-axis
+// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> variable "side" is a length of the the regular prism base side
+// '-> variable "d" or "r" defines rounding diameter or radius respectively
+// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// TODO: make "d" and "r" to possibly be 2D array
+// TODO: add optional tip with given height "ht"
+module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
+{
+    // module name
+    _module_name = "[QPP-regular_cylindroprism]";
+    
+    // compute radius
+    _r = is_undef(d) ? r : d/2;
+
+    // check the rounding radius
+    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+
+    // compute new _R and _D
+    _r_diff = _r/(cos(360/(2*n_sides)));
+    _R = R - _r_diff;
+    _D = is_undef(D) ? D : D-2*_r_diff;
+    _h = h - _r;
+
+    // crreating shape using minkowski sum 
+    minkowski()
+    {
+        // basic shape
+        qpp_regular_prism(n_sides=n_sides, h=_h, R=_R, D=_D, side=side, incircle=incircle, align_along_x=align_along_x, __module_name=_module_name);
+        // cylinder
+        cylinder(r=_r, h=_r, $fn=$fn);
+    }
+
 }
