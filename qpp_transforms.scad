@@ -32,3 +32,18 @@ module qpp_skew(xy=0, xz=0, yx=0, yz=0, zx=0, zy=0) {
         children();
 }
 
+
+// this module repeats its children n-times in 
+// '-> variable "n" is number of repetitions, n > 1
+// '-> variable "l" is the length of the children in the direction of repetition
+//     '-> l > 0 means the repetition in the given direction,
+//     '-> l < 0 means in the oposite direction
+// '-> variable "dir" is the direction of the repetition
+//     '-> 'x', 'y' or 'z' for the main axis
+//     '-> any combination of {'x', 'y', 'z'} for the particular direction
+//     '-> [x,y,z] for a specific direction
+//     '-> NOTE: all directions will be normalized 
+module qpp_repeat(n,l,dir="z")
+{
+
+}
