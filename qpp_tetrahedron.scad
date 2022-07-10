@@ -1,4 +1,5 @@
 use <qpp_utils.scad>
+include<qpp_constants.scad>
 
 // tetrahedron
 // '-> requires four 3D points to be constructed
@@ -43,14 +44,14 @@ module qpp_regular_tetrahedron(a=1)
     
     // check side
     _a = qpp_try_to_unpack_list(a);
-    assert(_a > 0, str(_module_name, " variable \"a\" cannot be negative"));
+    assert(_a > 0, str(_module_name, " variable \"a\" cannot be negative!"));
 
     // create points
     _va = sqrt(_a*_a-(_a/2)*(_a/2));
     _h = sqrt(_a*_a-((2/3)*_va)*((2/3)*_va));
     _points = [ [_a/2,0,0],
                 [0,_va,0],
-                [-a/2,0,0],
+                [-_a/2,0,0],
                 [0,(1/3)*_va,_h]
               ];
     
@@ -64,7 +65,31 @@ module qpp_regular_tetrahedron(a=1)
 //     '-> a or [a]
 // '-> variable "r" is a corner rounding radius
 // '-> variable "d" is a corner rounding diameter
-module qpp_regular_spherotetrahedron(a=1, r=0.1, d=undef)
+module qpp_regular_spherotetrahedron(a=1, r=0.1, d=undef, $fn=qpp_fn)
 {
+    _module_name = "[QPP-regular_spherotetrahedron]";
+    
+    // check side
+    _a = qpp_try_to_unpack_list(a);
+    assert(_a > 0, str(_module_name, " variable \"a\" cannot be negative!"));
+
+    // check radius
+    _r = is_undef(d) ? r : d/2;
+    assert(_a > 0, str(_module_name, " neither variable \"r\", nor \"d\" cannot be negative!"));
+
+    // compute edge _aa for regular tetrahedron to be rounded
+    _da = _r/tan(30);
+    _va = sqrt(_a*_a-(_a/2)*(_a/2));
+    _h = sqrt(_a*_a-((2/3)*_va)*((2/3)*_va));
+    _aa = _a*(1-(_r/_h)) - 2*_da;
+
+    translate([0,0,_r])
+    minkowski()
+    {
+        // regular tetrahedron
+        qpp_regular_tetrahedron(a=_aa);
+        // sphere
+        sphere(r=_r,$fn=$fn);
+    }
 
 }
