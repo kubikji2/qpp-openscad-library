@@ -78,11 +78,20 @@ module qpp_regular_spherotetrahedron(a=1, r=0.1, d=undef, $fn=qpp_fn)
     assert(_a > 0, str(_module_name, " neither variable \"r\", nor \"d\" cannot be negative!"));
 
     // compute edge _aa for regular tetrahedron to be rounded
-    _da = _r/tan(30);
+    // '-> yeah that's magic, right?
+    // '-> _ang is face-edge-face angle
+    _ang = atan(2*sqrt(2));
+    // '-> _rp is projection of the distance between the sloped edges to the xy-plane
+    _rp = _r/sin(_ang);
+    // '-> _da is a difference between the inner tetrahedra and the outer tetrahedra
+    _da = _rp/tan(30);
+    // '-> _va is auxiliary variable to compute height of the outer tetrahedra
     _va = sqrt(_a*_a-(_a/2)*(_a/2));
     _h = sqrt(_a*_a-((2/3)*_va)*((2/3)*_va));
+    // '-> firstly get the a size at the height _r and then subtract _da
     _aa = _a*(1-(_r/_h)) - 2*_da;
 
+    // minkowski sum
     translate([0,0,_r])
     minkowski()
     {
