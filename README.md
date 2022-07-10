@@ -20,9 +20,9 @@ Features that are planned for the library and its development state.
 - [x] ***edgelesss_cube*** - cube with edges cut off
 - [x] ***trapezoid***
 - [x] ***tetrahedron***
-  - [ ] *regular tetrahedron*
-  - [ ] *spherotetrahedron*
-  - [ ] *regular spherotetrahedron*
+  - [x] *regular tetrahedron*
+  - [ ] ~~*spherotetrahedron*~~ hard to solve analytically
+  - [x] *regular spherotetrahedron*
 - [x] ***prisms***
   - [x] *prism*
   - [x] *cylindroprism*
