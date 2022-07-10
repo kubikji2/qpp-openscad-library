@@ -14,7 +14,7 @@ Features that are planned for the library and its development state.
     - [x] additions, subtraction, dot product, cross product wrapper
   - [x] vector/array length, sum, checkers
 - [X] ***dice*** (first, since it is an easy shape)
-- [ ] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
+- [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
 - [x] ***spherocube*** - sphere-cube hybrid
 - [x] ***cornerless_cube*** - cube with all corners cut off
 - [x] ***edgelesss_cube*** - cube with edges cut off
@@ -33,8 +33,13 @@ Features that are planned for the library and its development state.
 - [ ] ***pyramid***
   - [ ] *regular pyramid*
   - [ ] *regular spheropyramid*
+  - [ ] *cone* wrapper
+  - [ ] *sherocone*
 - [ ] ***wrapped cylinder*** - can-like geometry
-- [ ] ***randomly wrapped cuboid***
+  - [ ] *wrapped prism*
+  - [ ] sphere-like wrapped alternatives
+- [ ] ***randomly wrapped cuboid*** - for damage like-feel
+- [ ] ***rotary polynomials*** - for different polynomial degrees
 
 ### Shapes and logos
 
@@ -43,14 +48,15 @@ Features that are planned for the library and its development state.
 
 ### Features
 
+- [ ] ***repeat*** transformation
 - [ ] make all geometries alignable to center in xyz and to center in xy-plane
   - TODO: define a reasonable and unified interface
 - [ ] debug utilities
   - [ ] coordinate frame - for transforms
-- [ ] create functions to get transform (translation and rotation) to the center of each side, edge, and corner of geometries given its parameters.
+- [ ] functions to get a transform (translation and rotation) to the center of each side, edge, and corner of geometries given its parameters.
   - [ ] basic geometries
   - [ ] implement for basic geometries equivalents (cylindrocubes, spherocubes...)
   - [ ] implement for non-basic geometries (prisms, pyramids,...)
 - [ ] create modules for shell-like geometries
-- [ ] create modules for box-like geometries including the lid and the box itself
+- [ ] create modules for box-like geometries, including the lid and the box itself
 - [ ] create patterns generators for pattern cutters
