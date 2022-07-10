@@ -34,8 +34,25 @@ module qpp_tetrahedron(points=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
 }
 
 // just regular tetrahedron defined by length of its edge
-// '-> veriable "a" is the length of the tetrahedron edge
+// '-> variable "a" is the length of the tetrahedron edge
+//     '-> a or [a]
 module qpp_regular_tetrahedron(a=1)
 {
+    _module_name = "[QPP-regular_tetrahedron]";
     
+    // check side
+    _a = qpp_try_to_unpack_list(a);
+    assert(_a > 0, str(_module_name, " variable \"a\" cannot be negative"));
+
+    // create points
+    _va = sqrt(_a*_a-(_a/2)*(_a/2));
+    _h = sqrt(_a*_a-((2/3)*_va)*((2/3)*_va));
+    _points = [ [_a/2,0,0],
+                [0,_va,0],
+                [-a/2,0,0],
+                [0,(1/3)*_va,_h]
+              ];
+    
+    translate([0,-(1/3)*_va,0])
+        qpp_tetrahedron(points=_points);
 }
