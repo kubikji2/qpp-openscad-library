@@ -33,8 +33,12 @@ Features that are planned for the library and its development state.
 - [ ] ***pyramid***
   - [ ] *regular pyramid*
   - [ ] *regular spheropyramid*
+  - [ ] *pyramid*
+  - [ ] *spheropyramid*
   - [ ] *cone* wrapper
   - [ ] *sherocone*
+  - [ ] *regular cone*
+  - [ ] *regular spherocone*
 - [ ] ***wrapped cylinder*** - can-like geometry
   - [ ] *wrapped prism*
   - [ ] sphere-like wrapped alternatives
