@@ -1,6 +1,6 @@
 use <qpp_utils.scad>
 
-// just regular tetrahedron
+// tetrahedron
 // '-> requires four 3D points to be constructed
 //     '-> points[0:2] creates the base according the right-hand rule
 //     '-> fourth point is above the base
@@ -31,4 +31,11 @@ module qpp_tetrahedron(points=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
     // geometry
     polyhedron(_points, _facets);
 
+}
+
+// just regular tetrahedron defined by length of its edge
+// '-> veriable "a" is the length of the tetrahedron edge
+module qpp_regular_tetrahedron(a=1)
+{
+    
 }
