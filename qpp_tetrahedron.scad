@@ -33,7 +33,8 @@ module qpp_tetrahedron(points=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]])
 
 }
 
-// just regular tetrahedron defined by length of its edge
+
+// regular tetrahedron
 // '-> variable "a" is the length of the tetrahedron edge
 //     '-> a or [a]
 module qpp_regular_tetrahedron(a=1)
@@ -55,4 +56,15 @@ module qpp_regular_tetrahedron(a=1)
     
     translate([0,-(1/3)*_va,0])
         qpp_tetrahedron(points=_points);
+}
+
+
+// regular tetrahedron with rounded corners
+// '-> variable "a" is the length of the tetrahedron edge
+//     '-> a or [a]
+// '-> variable "r" is a corner rounding radius
+// '-> variable "d" is a corner rounding diameter
+module qpp_regular_spherotetrahedron(a=1, r=0.1, d=undef)
+{
+
 }
