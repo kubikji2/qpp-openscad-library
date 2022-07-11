@@ -88,6 +88,18 @@ function qpp_sum_vec(v, _i = 0, _sum = 0) =
         :
         undef;
 
+// get norm of the vector "v"
+// '-> implementation use a trick that v.v = ||v||^2
+function qpp_norm_vec(v) =
+    is_list(v) ?
+        sqrt(qpp_dot_vec(v,v)) :
+        undef;
+
+// get norm^2 of the vector "v"
+// '-> implementation use a trick that v.v = ||v||^2
+function qpp_norm2_vec(v) =
+    qpp_dot_vec(v,v);
+
 // dot product of two vector of compatible length
 // '-> based on the qpp_sum_vec, therefore probably handled as for-loop internally 
 function qpp_dot_vec(v1, v2, _i = 0, _dot = 0) =
