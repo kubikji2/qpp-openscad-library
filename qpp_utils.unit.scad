@@ -190,3 +190,36 @@ module qpp_test_pts2vec()
 }
 
 qpp_test_pts2vec();
+
+module qpp_test_norm()
+{
+    args = [
+            [[0,1], 1],
+            [[1,1], sqrt(2)],
+            [[0,0,0], 0],
+            [[2,2,2], sqrt(12)],
+            [[1,2,3], sqrt(14)]
+    ];
+    f = function(x) qpp_norm_vec(x);
+    qpp_unit_test_function(fcn=f, data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_norm();
+
+module qpp_test_norm2()
+{
+    args = [
+            [[0,1], 1],
+            [[1,1], 2],
+            [[0,0,0], 0],
+            [[2,2,2], 12],
+            [[1,2,3], 14]
+    ];
+    f = function(x) qpp_norm2_vec(x);
+    qpp_unit_test_function(fcn=f, data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_norm2();
+
