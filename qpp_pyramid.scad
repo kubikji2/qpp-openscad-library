@@ -80,7 +80,9 @@ module qpp_regular_pyramid(n=3, a=1, R=undef, D=undef, incircle=true, align_alon
 
 }
 
+
 // cone
+// '-> argument "h" is he height of the pyramid
 // '-> additional argument "R"|"D" defines the radius/diameter of the base
 //     '-> "R" or "D" overrides argument "a"
 // '-> private argument "__module_name" defines name used in the asserts
@@ -89,7 +91,21 @@ module qpp_cone(h=1, R=1, D=undef, __module_name="[QPP-cone]", $fn=qpp_fn)
     qpp_pyramid(n=$fn, h=h, R=R, D=D, __module_name=__module_name);
 }
 
-module qpp_regular_cone(r=0.5, d=undef)
-{
 
+// regular cone (all edges have same length)
+// '-> argument "h" is he height of the pyramid
+// '-> additional argument "R"|"D" defines the radius/diameter of the base
+//     '-> "R" or "D" overrides argument "a"
+// '-> private argument "__module_name" defines name used in the asserts
+module qpp_regular_cone(R=0.5, D=undef, $fn=qpp_fn)
+{
+    _module_name="[QPP-regular_cone]";
+    // check radius
+    _R = is_undef(D) ? R : D/2;
+    assert(_R > 0, str(_module_name, " argument \"R\"|\"D\" must be positive!"));
+    // compute heigh
+    _h = sqrt(4*_R*_R-_R*_R);
+
+    // base module
+    qpp_cone($fn=$fn, h=_h, R=R, D=D, __module_name=_module_name);
 }
