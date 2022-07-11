@@ -12,6 +12,7 @@ Features that are planned for the library and its development state.
   - [x] unit tests
   - [x] vector arithmetics
     - [x] additions, subtraction, dot product, cross product wrapper
+    - [x] vector norms added
   - [x] vector/array length, sum, checkers
 - [X] ***dice*** (first, since it is an easy shape)
 - [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
@@ -31,10 +32,10 @@ Features that are planned for the library and its development state.
   - [x] *regular cylindroprism*
   - [x] *regular spheroprism*
 - [ ] ***pyramid***
-  - [ ] *regular pyramid*
-  - [ ] *regular spheropyramid*
   - [ ] *pyramid*
   - [ ] *spheropyramid*
+  - [ ] *regular pyramid*
+  - [ ] *regular spheropyramid*
   - [ ] *cone* wrapper
   - [ ] *sherocone*
   - [ ] *regular cone*
@@ -52,7 +53,7 @@ Features that are planned for the library and its development state.
 
 ### Features
 
-- [ ] ***repeat*** transformation
+- [x] ***repeat*** transformation
 - [ ] make all geometries alignable to center in xyz and to center in xy-plane
   - TODO: define a reasonable and unified interface
 - [ ] debug utilities
