@@ -1,3 +1,4 @@
+include<qpp_constants.scad>
 use <qpp_utils.scad>
 
 // pyramid
@@ -79,9 +80,13 @@ module qpp_regular_pyramid(n=3, a=1, R=undef, D=undef, incircle=true, align_alon
 
 }
 
-module qpp_cone(r=0.5, d=undef, h=1)
+// cone
+// '-> additional argument "R"|"D" defines the radius/diameter of the base
+//     '-> "R" or "D" overrides argument "a"
+// '-> private argument "__module_name" defines name used in the asserts
+module qpp_cone(h=1, R=1, D=undef, __module_name="[QPP-cone]", $fn=qpp_fn)
 {
-
+    qpp_pyramid(n=$fn, h=h, R=R, D=D, __module_name=__module_name);
 }
 
 module qpp_regular_cone(r=0.5, d=undef)
