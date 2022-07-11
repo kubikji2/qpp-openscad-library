@@ -43,8 +43,9 @@ module qpp_skew(xy=0, xz=0, yx=0, yz=0, zx=0, zy=0) {
 //     '-> 'x', 'y' or 'z' for the main axis
 //     '-> any combination of {'x', 'y', 'z'} for the particular direction
 //     '-> [x,y,z] for a specific direction
-//     '-> NOTE: all directions will be normalized 
-module qpp_repeat(n,l,dir="z")
+// '-> variable "normalized" defines whether the direction should be normalized or not
+//     '-> NOTE: in case of string-based definition of "dir", the direction is composed from unit vectors
+module qpp_repeat(n, l, dir="z", normalize=false)
 {
     _module_name = "[QPP-repeat]";
 
@@ -55,21 +56,22 @@ module qpp_repeat(n,l,dir="z")
     _l = l;
     // process dir
     assert((qpp_is_valid_3D_list(dir)==1) || is_string(dir), str(_module_name, " variable \"dir\" (interpreted as vector) has invalid size != 3, but ", str(qpp_len_s(dir)),"!"));
+    
+    // get direction componente
     _is_str = is_string(dir);
-
     _x = _is_str ? (len(search(dir,"x")) > 0 ? 1 : 0) : dir.x;
     _y = _is_str ? (len(search(dir,"y")) > 0 ? 1 : 0) : dir.y;
     _z = _is_str ? (len(search(dir,"z")) > 0 ? 1 : 0) : dir.z;
 
-    _norm = qpp_sum_vec([_x,_y,_z]);
+    // compute norm
+    _norm = normalize ? qpp_norm_vec([_x,_y,_z]) : 1;
 
-    echo(str([_x,_y,_z],_norm));
-
-    // TODO get norm
-    _dir = [0,0,1];
+    // get repetition direction
+    _dir = [_x/_norm, _y/_norm, _z/_norm];
 
     for (i=[0:n-1])
     {
+        // get transform
         _t = [for(_el=_dir) i*_el];
         translate(_t)
             children();
