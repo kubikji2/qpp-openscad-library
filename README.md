@@ -12,7 +12,7 @@ Features that are planned for the library and its development state.
   - [x] unit tests
   - [x] vector arithmetics
     - [x] additions, subtraction, dot product, cross product wrapper
-    - [x] vector norms added
+    - [x] vector norms, number of (un)def elements in list
   - [x] vector/array length, sum, checkers
 - [X] ***dice*** (first, since it is an easy shape)
 - [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
@@ -41,9 +41,10 @@ Features that are planned for the library and its development state.
   - [x] *regular cone*
   - [ ] *regular spherocone*
 - [ ] ***wrinkled geometries***
-  - [ ] *wrinkled cylinder* - can-like geometry
+  - [x] *wrinkled cylinder* - can-like geometry
+  - [x] *wrinkled cylinder with toroid wrinkles*
   - [ ] *wrinkled prism*
-  - [ ] sphere-like wrapped alternatives
+  - [ ] *wrinkled prism with toroid wrinkles*
 - [ ] ***basic geometries***
   - [x] *toroid*
   - [ ] *annular cylinder* or *ring*
@@ -60,6 +61,7 @@ Features that are planned for the library and its development state.
 ### Features
 
 - [x] ***repeat*** transformation
+- [x] ***conditional difference*** transformation
 - [ ] make all geometries alignable to center in xyz and to center in xy-plane
   - TODO: define a reasonable and unified interface
 - [ ] debug utilities
