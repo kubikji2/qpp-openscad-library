@@ -72,7 +72,7 @@ module qpp_repeat(n, l, dir="z", normalize=false)
     for (i=[0:n-1])
     {
         // get transform
-        _t = [for(_el=_dir) i*_el];
+        _t = [for(_el=_dir) i * (_el*_l)];
         translate(_t)
             children();
     }
