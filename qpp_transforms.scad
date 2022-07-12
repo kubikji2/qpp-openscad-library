@@ -77,3 +77,22 @@ module qpp_repeat(n, l, dir="z", normalize=false)
             children();
     }
 }
+
+// the child modules are difference iff the condition is fulfilled
+// NOTE: the condition is true by default; therefore, you can use it as regular difference
+// TODO: add options to scale objects a bit to improve the preview
+module qpp_difference(cond=true)
+{
+    if(cond)
+    {
+        difference()
+        {
+            children(0);
+            children([1:$children-1]);
+        }
+    }
+    else
+    {
+        children();
+    }    
+}
