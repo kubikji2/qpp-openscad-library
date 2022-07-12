@@ -37,7 +37,7 @@ module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
 
     // construct geometry
     rotate_extrude(convexity=4, $fn=$fn)
-        translate([_t+_r,0,0])
+        translate([_R-_t,0,0])
             circle(r=_t, $fn=$fn);
 
 }
