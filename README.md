@@ -40,9 +40,15 @@ Features that are planned for the library and its development state.
   - [ ] *sherocone*
   - [x] *regular cone*
   - [ ] *regular spherocone*
-- [ ] ***wrapped cylinder*** - can-like geometry
-  - [ ] *wrapped prism*
+- [ ] ***wrinkled geometries***
+  - [ ] *wrinkled cylinder* - can-like geometry
+  - [ ] *wrinkled prism*
   - [ ] sphere-like wrapped alternatives
+- [ ] ***basic geometries***
+  - [ ] *toroid*
+  - [ ] *annular cylinder* or *ring*
+  - [ ] *"ring with a conical hole"*
+  - [ ] *spheroring*
 - [ ] ***randomly wrapped cuboid*** - for damage like-feel
 - [ ] ***rotary polynomials*** - for different polynomial degrees
 
