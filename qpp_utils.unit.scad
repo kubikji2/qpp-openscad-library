@@ -223,3 +223,32 @@ module qpp_test_norm2()
 
 qpp_test_norm2();
 
+module qpp_test_count_undef()
+{
+    args = [
+            [[1,undef], 1],
+            [[undef], 1],
+            [[0, undef, undef, 1], 2],
+            [[0, undef, undef, 1, undef], 3]
+    ];
+    f = function(x) qpp_count_undef(x);
+    qpp_unit_test_function(fcn=f, data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_count_undef();
+
+module qpp_test_count_def()
+{
+    args = [
+            [[1,undef], 1],
+            [[undef], 0],
+            [[0, undef, undef, 1], 2],
+            [[0, undef, undef, 1, undef], 2]
+    ];
+    f = function(x) qpp_count_def(x);
+    qpp_unit_test_function(fcn=f, data=args);
+    echo(test_passed_text(f));
+}
+
+qpp_test_count_def();
