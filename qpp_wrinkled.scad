@@ -70,23 +70,17 @@ module qpp_wrinkled_cylinder(H=undef, R=0.5, D=undef, d=0.05, h=undef, n_wrinkle
         }
     }
     */
+
+    // repeat the segments
     qpp_repeat(n=_n,l=_h,dir="z")
     {
+        // decide whther use circular or sharp cuts
         if (use_circular)
         {
             _t = min(_h,_d);
 
-            // TODO handle negative _d
-            if (d > 0)
-            {
-                difference()
-                {
-                    cylinder(r=_R, h=_h, $fn=$fn);
-                    translate([0,0,_h/2])
-                        qpp_toroid(R=_R+_t, t=_t);
-                }
-            }
-            else
+            // selective difference is used to destinguish between the "holes" or "hills"
+            qpp_difference(_d > 0)
             {
                 cylinder(r=_R, h=_h, $fn=$fn);
                 translate([0,0,_h/2])
