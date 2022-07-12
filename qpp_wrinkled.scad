@@ -1,5 +1,6 @@
-use <qpp_utils.scad>
 include<qpp_constants.scad>
+use <qpp_utils.scad>
+use <qpp_transforms.scad>
 
 // wrinkled cylinder
 // '-> 2-mutex argument "H" defines the height of the cylinder
@@ -57,6 +58,7 @@ module qpp_wrinkled_cylinder(H=undef, R=0.5, D=undef, d=0.05, h=undef, n_wrinkle
                                                                         " argument \"n_wrinkles\" is not integer or positive!"));
 
     // base geometry
+    /*
     for(i=[0:_n-1])
     {
         translate([0,0,i*_h])
@@ -65,14 +67,12 @@ module qpp_wrinkled_cylinder(H=undef, R=0.5, D=undef, d=0.05, h=undef, n_wrinkle
             translate([0,0,_h/2]) cylinder(r1=_R-_d, r2=_R, h=_h/2, $fn=$fn);
         }
     }
-    /*
+    */
     qpp_repeat(n=_n,l=_h,dir="z")
     {
         cylinder(r1=_R, r2=_R-_d, h=_h/2, $fn=$fn);
             translate([0,0,_h/2]) cylinder(r1=_R-_d, r2=_R, h=_h/2, $fn=$fn);
     }
-    */
-
 
 }
 
