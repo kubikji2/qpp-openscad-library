@@ -47,7 +47,7 @@ Features that are planned for the library and its development state.
   - [ ] *wrinkled prism with toroid wrinkles*
 - [ ] ***basic geometries***
   - [x] *toroid*
-  - [ ] *annular cylinder* or *ring*
+  - [x] *annular cylinder* or *ring*
   - [ ] *"ring with a conical hole"*
   - [ ] *spheroring*
 - [ ] ***randomly wrapped cuboid*** - for damage like-feel
