@@ -4,7 +4,9 @@ use <qpp_utils.scad>
 // toroid shape
 // '-> argument "R"|"D" is radius/diameter of the outer circle if projected to xy-plane
 // '-> argument "r"|"d" is radius/diameter of the inner circle if projected to the xy-plane
-// '-> argument "t" is the thicknes of the torioid, i.e. diameter of the circle if projected to the xz-plane
+// '-> argument "t" is the thickness of the torioid, i.e. diameter of the circle if projected to the xz-plane
+// NOTE: {"R"|"D", "r"|"d", "t" } is 2-mutex group meaning that 2 parameters must be defined
+// '-> argumen "$fn" is just $fn
 module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
 {
     _module_name = "[QPP-toroid]";
@@ -40,4 +42,15 @@ module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
         translate([_R-_t,0,0])
             circle(r=_t, $fn=$fn);
 
+}
+
+// ring a.k.a. annular cylinder
+// '-> argument 'R'|'D' defines the radius/diameter of the outer circle projected to xy-plane
+// '-> argument 'r'|'d' defines the radius/diameter of the inner circle projected to xy-plane
+// '-> argument 't' is the width of the the annulus projected to xy-plane
+// NOTE: {"R"|"D", "r"|"d", "t" } is 2-mutex group meaning that 2 parameters must be defined
+// '-> argumen "$fn" is just $fn
+module qpp_ring(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
+{
+    
 }
