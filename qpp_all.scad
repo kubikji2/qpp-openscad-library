@@ -8,15 +8,15 @@ use <qpp_basic_geometries.scad>
 
 // utils
 use <qpp_transforms.scad>
-use <qpp_utils.scadd>
+use <qpp_utils.scad>
 
 // cuboids++
 use <qpp_cornerlesscube.scad>
 use <qpp_cylindrocube.scad>
 use <qpp_dice.scad>
 use <qpp_edgelesscube.scad>
-use <qpp_sherocude.scad>
-use <qpp_trapezoid>
+use <qpp_spherocube.scad>
+use <qpp_trapezoid.scad>
 
 // poly-stuff
 use <qpp_prism.scad>
