@@ -251,9 +251,8 @@ module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0
     assert(_r >= 0, str(_module_name, " argument \"r\", neither \"d\" can be negative!"));
 
     // compute new _R and _D
-    _r_diff = _r/(cos(360/(2*n_sides)));
-    _R = R - _r_diff;
-    _D = is_undef(D) ? D : D-2*_r_diff;
+    _R = R-_r;
+    _D = is_undef(D) ? D : D-2*_r;
     _h_cylinder = h/5;
     _h_prism = h - _h_cylinder;
 
