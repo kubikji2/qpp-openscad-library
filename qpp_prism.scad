@@ -13,30 +13,30 @@ function qpp_prism_shell_idx(n_sides) =
     ];
 
 // module for creating vertical prisms
-// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+// '-> argument "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
-// '-> variable "h" is the height of the prism in z-axis
+// '-> argument "h" is the height of the prism in z-axis
 // '-> optional "off" is the arbitrary 3D vector transforming the origin between the base and the top of the origin
-//     '-> "off" overrides the variable "h"
+//     '-> "off" overrides the argument "h"
 //     '-> if present the "points" must be a list of 3D points
 module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 {
     _module_name = "[QPP-prism]";
     // check the length of points
-    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
-    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+    assert(is_list(points),      str(_module_name, " argument \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " argument \"points\" must contain at least three elements!"));
 
     _is_2D = is_undef(off);
     for(_point=points)
     {
-        assert(!_is_2D || qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
-        assert( _is_2D || qpp_len(_point) == 3, str(_module_name, " some point in variable \"points\" is not 3D!"));
+        assert(!_is_2D || qpp_len(_point) == 2, str(_module_name, " some point in argument \"points\" is not 2D!"));
+        assert( _is_2D || qpp_len(_point) == 3, str(_module_name, " some point in argument \"points\" is not 3D!"));
     }
 
     // TODO check self-intersection
     
     // check off
-    assert(is_undef(off) || qpp_len(off)==3, str(_module_name, " variable \"off\" is not 3D vector!"));
+    assert(is_undef(off) || qpp_len(off)==3, str(_module_name, " argument \"off\" is not 3D vector!"));
     _off = _is_2D ? [0,0,h] : off;
 
     _points = _is_2D ? [for (_point=points) [_point[0],_point[1], 0] ] : points;
@@ -71,11 +71,11 @@ module qpp_prism(points=[[0,0],[1,0],[0,1]], h=1, off=undef)
 }
 
 // module for creating vertical prisms with rounded corners in xy-plane
-// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+// '-> argument "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
-// '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" defines rounding diameter or radius respectively
-// NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
+// '-> argument "h" is the height of the prism in z-axis
+// '-> argument "d" or "r" defines rounding diameter or radius respectively
+// NOTE: that argument "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
 {
@@ -83,19 +83,19 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
     _module_name = "[QPP-cylindroprism]";
     
     // check points similar to qpp_prism
-    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
-    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+    assert(is_list(points),      str(_module_name, " argument \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " argument \"points\" must contain at least three elements!"));
 
     // check points dimension size
     for(_point=points)
     {
-        assert(qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
+        assert(qpp_len(_point) == 2, str(_module_name, " some point in argument \"points\" is not 2D!"));
     }
 
     // get radius
     _r = is_undef(d) ? r : d/2;
     // check radius
-    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    assert(_r >= 0, str(_module_name, " argument \"r\", neither \"d\" can be negative!"));
 
     // height
     _h_cylinder = h/5;
@@ -113,11 +113,11 @@ module qpp_cylindroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $f
 }
 
 // module for creating vertical prisms with corners rounded in all axis
-// '-> variable "points" is a list of points defining the base of the shape in xy-plane
+// '-> argument "points" is a list of points defining the base of the shape in xy-plane
 //     '-> points are expected to be 2D, or 3D (see case below)
-// '-> variable "h" is the height of the prism in z-axis
-// '-> variable "d" or "r" defines rounding diameter or radius respectively
-// NOTE: that variable "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
+// '-> argument "h" is the height of the prism in z-axis
+// '-> argument "d" or "r" defines rounding diameter or radius respectively
+// NOTE: that argument "off" is not avaliable since there is no hull operation keeping the z-dimension for two 2D object
 //       '-> see: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#hull
 module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=qpp_fn)
 {
@@ -125,19 +125,20 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
     _module_name = "[QPP-cylindroprism]";
     
     // check points similar to qpp_prism
-    assert(is_list(points),      str(_module_name, " variable \"points\" is not a list!"));
-    assert(qpp_len(points) >= 3, str(_module_name, " variable \"points\" must contain at least three elements!"));
+    assert(is_list(points),      str(_module_name, " argument \"points\" is not a list!"));
+    assert(qpp_len(points) >= 3, str(_module_name, " argument \"points\" must contain at least three elements!"));
 
     // check points dimension size
     for(_point=points)
     {
-        assert(qpp_len(_point) == 2, str(_module_name, " some point in variable \"points\" is not 2D!"));
+        assert(qpp_len(_point) == 2, str(_module_name, " some point in argument \"points\" is not 2D!"));
     }
 
     // get radius
     _r = is_undef(d) ? r : d/2;
     // check radius
-    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    assert(_r >= 0, str(_module_name, " argument \"r\", neither \"d\" can be negative!"));
+    assert(2*_r <= h, str(_module_name, " argument \"h\" (height) is not big enought for provided arguments \"r\"|\"d\"!"));
 
     // height
     _h_prism = h - 2*_r;
@@ -155,11 +156,11 @@ module qpp_spheroprism(points=[[0,0],[1,0],[0,1]], h=1, r = 0.1, d = undef, $fn=
 }
 
 // module for regular prism
-// '-> variable "n_sides" defines number of regular polygon used as prism base
-// '-> variable "h" is the height of the regular prism in z-axis
-// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
-// '-> variable "side" is a length of the the regular prism base side
-// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// '-> argument "n_sides" defines number of regular polygon used as prism base
+// '-> argument "h" is the height of the regular prism in z-axis
+// '-> argument "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> argument "side" is a length of the the regular prism base side
+// '-> argument "align_along_x" defines whether the prism sides should be aligned with the x axis
 // TODO: add optional tip with given height "ht"
 module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=true, align_along_x=true, __module_name="[QPP-regular_prism]")
 {
@@ -167,7 +168,7 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
     _module_name = __module_name;
     
     // check number of sides
-    assert(n_sides >= 3, str(_module_name, " variable \"n_sides\" must be at least three!"));
+    assert(n_sides >= 3, str(_module_name, " argument \"n_sides\" must be at least three!"));
 
     // get side
     _using_side = !is_undef(side);
@@ -176,8 +177,8 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
     __r = is_undef(D) ? R : D/2;
     
     // check radius
-    assert( _using_side ||  __r >= 0, str(_module_name, " variable \"R\", neither \"D\" can be negative!"));
-    assert(!_using_side || side >= 0, str(_module_name, " variable \"side\" cannot be negative!"));
+    assert( _using_side ||  __r >= 0, str(_module_name, " argument \"R\", neither \"D\" can be negative!"));
+    assert(!_using_side || side >= 0, str(_module_name, " argument \"side\" cannot be negative!"));
 
     // compute radius
     _r = _using_side ?
@@ -192,12 +193,12 @@ module qpp_regular_prism(n_sides=5, h=1, R=0.5, D=undef, side=undef, incircle=tr
 }
 
 // module for regular prism with corners rounded in all axis
-// '-> variable "n_sides" defines number of regular polygon used as prism base
-// '-> variable "h" is the height of the regular prism in z-axis
-// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
-// '-> variable "side" is a length of the the regular prism base side
-// '-> variable "d" or "r" defines rounding diameter or radius respectively
-// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// '-> argument "n_sides" defines number of regular polygon used as prism base
+// '-> argument "h" is the height of the regular prism in z-axis
+// '-> argument "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> argument "side" is a length of the the regular prism base side
+// '-> argument "d" or "r" defines rounding diameter or radius respectively
+// '-> argument "align_along_x" defines whether the prism sides should be aligned with the x axis
 // TODO: make "d" and "r" to possibly be 2D array
 // TODO: add optional tip with given height "ht"
 module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
@@ -209,7 +210,8 @@ module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1
     _r = is_undef(d) ? r : d/2;
 
     // check the rounding radius
-    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    assert(_r >= 0, str(_module_name, " argument \"r\", neither \"d\" can be negative!"));
+    assert(2*_r <= _h, str(_module_name, " argument \"h\" (height) is not big enought for provided arguments \"r\"|\"d\"!"));
 
     // compute new _R and _D
     _r_diff = _r/(cos(360/(2*n_sides)));
@@ -229,12 +231,12 @@ module qpp_regular_spheroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1
 }
 
 // module for regular prism with corners rounded in xy-axis
-// '-> variable "n_sides" defines number of regular polygon used as prism base
-// '-> variable "h" is the height of the regular prism in z-axis
-// '-> variable "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
-// '-> variable "side" is a length of the the regular prism base side
-// '-> variable "d" or "r" defines rounding diameter or radius respectively
-// '-> variable "align_along_x" defines whether the prism sides should be aligned with the x axis
+// '-> argument "n_sides" defines number of regular polygon used as prism base
+// '-> argument "h" is the height of the regular prism in z-axis
+// '-> argument "D" or "R" defines the diameter or radius of the base incircled/excircled circle respectively.
+// '-> argument "side" is a length of the the regular prism base side
+// '-> argument "d" or "r" defines rounding diameter or radius respectively
+// '-> argument "align_along_x" defines whether the prism sides should be aligned with the x axis
 // TODO: make "d" and "r" to possibly be 2D array
 // TODO: add optional tip with given height "ht"
 module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0.1, d=undef, incircle=true, align_along_x=true, $fn=qpp_fn)
@@ -246,21 +248,22 @@ module qpp_regular_cylindroprism(n_sides=5, h=1, R=0.5, D=undef, side=undef, r=0
     _r = is_undef(d) ? r : d/2;
 
     // check the rounding radius
-    assert(_r >= 0, str(_module_name, " variable \"r\", neither \"d\" can be negative!"));
+    assert(_r >= 0, str(_module_name, " argument \"r\", neither \"d\" can be negative!"));
 
     // compute new _R and _D
     _r_diff = _r/(cos(360/(2*n_sides)));
     _R = R - _r_diff;
     _D = is_undef(D) ? D : D-2*_r_diff;
-    _h = h - _r;
+    _h_cylinder = h/5;
+    _h_prism = h - _h_cylinder;
 
     // crreating shape using minkowski sum 
     minkowski()
     {
         // basic shape
-        qpp_regular_prism(n_sides=n_sides, h=_h, R=_R, D=_D, side=side, incircle=incircle, align_along_x=align_along_x, __module_name=_module_name);
+        qpp_regular_prism(n_sides=n_sides, h=_h_prism, R=_R, D=_D, side=side, incircle=incircle, align_along_x=align_along_x, __module_name=_module_name);
         // cylinder
-        cylinder(r=_r, h=_r, $fn=$fn);
-    }
+        cylinder(r=_r, h=_h_cylinder, $fn=$fn);
+   }
 
 }
