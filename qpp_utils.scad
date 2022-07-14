@@ -61,6 +61,15 @@ function qpp_len_s(array) =
         is_undef(array) ?
             ">undef<" : ">scalar<";
 
+// counts number of undefined elements in "v"
+function qpp_count_undef(v) = 
+    qpp_sum_vec([for(_el=v) is_undef(_el) ? 1 : 0]);
+
+// counts number of defined elements in "v"
+function qpp_count_def(v) = 
+    qpp_sum_vec([for(_el=v) is_undef(_el) ? 0 : 1]);
+
+// decides whether the arrays/vectors are comparable
 function _qpp_comp_arrs(v1,v2) =
     is_list(v1) && is_list(v2) && len(v1)==len(v2);
 
@@ -87,6 +96,18 @@ function qpp_sum_vec(v, _i = 0, _sum = 0) =
             _sum
         :
         undef;
+
+// get norm of the vector "v"
+// '-> implementation use a trick that v.v = ||v||^2
+function qpp_norm_vec(v) =
+    is_list(v) ?
+        sqrt(qpp_dot_vec(v,v)) :
+        undef;
+
+// get norm^2 of the vector "v"
+// '-> implementation use a trick that v.v = ||v||^2
+function qpp_norm2_vec(v) =
+    qpp_dot_vec(v,v);
 
 // dot product of two vector of compatible length
 // '-> based on the qpp_sum_vec, therefore probably handled as for-loop internally 
