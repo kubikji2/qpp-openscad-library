@@ -80,7 +80,7 @@ module qpp_wrinkled_cylinder(H=undef, R=0.5, D=undef, d=0.05, h=undef, n_wrinkle
             _t = min(_h,_d);
 
             // selective difference is used to destinguish between the "holes" or "hills"
-            qpp_difference(_d > 0)
+            qpp_difference(_d > 0, on_fail_abort=false)
             {
                 cylinder(r=_R, h=_h, $fn=$fn);
                 translate([0,0,_h/2])
