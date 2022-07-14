@@ -6,7 +6,7 @@ include<qpp_constants.scad>
 __qpp_rad_Rf = 1;
 __qpp_rad_rf = 0.3;
 __qpp_rad__rf = 0.2;
-__qpp_rad_angles = [0,120,240];
+__qpp_rad_angles = [30,150,270];
 
 // single radiation fin
 module __qpp_rad_fin(r, h, $fn=$fn)
