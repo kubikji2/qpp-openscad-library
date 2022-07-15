@@ -1,7 +1,7 @@
 include<qpp_constants.scad>
 use <qpp_utils.scad>
 
-module __qpp_toroid_or_ring(is_toroid, R=undef, D=undef, r=undef, d=undef, t=undef, h=undef, $fn=qpp_fn)
+module __qpp_toroid_or_ring(is_toroid, R=undef, D=undef, r=undef, d=undef, t=undef, h=undef, fn=$fn)
 {
     _module_name = is_toroid ? "[QPP-toroid]" : "[QPP-ring]";
 
@@ -34,9 +34,9 @@ module __qpp_toroid_or_ring(is_toroid, R=undef, D=undef, r=undef, d=undef, t=und
     // construct geometry
     if (is_toroid)
     {
-        rotate_extrude(convexity=4, $fn=$fn)
+        rotate_extrude(convexity=4, $fn=fn)
         translate([_R-_t,0,0])
-            circle(r=_t, $fn=$fn);
+            circle(r=_t, $fn=fn);
     }
     else
     {
@@ -56,11 +56,11 @@ module __qpp_toroid_or_ring(is_toroid, R=undef, D=undef, r=undef, d=undef, t=und
 // '-> argument "r"|"d" is radius/diameter of the inner circle if projected to the xy-plane
 // '-> argument "t" is the thickness of the torioid, i.e. diameter of the circle if projected to the xz-plane
 // NOTE: {"R"|"D", "r"|"d", "t" } is 2-mutex group meaning that 2 parameters must be defined
-// '-> argumen "$fn" is just $fn
-module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
+// '-> argumen "fn" is just $fn
+module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, fn=$fn)
 {
 
-    __qpp_toroid_or_ring(is_toroid=true, R=R, D=D, r=r, d=d, t=t, $fn=$fn);
+    __qpp_toroid_or_ring(is_toroid=true, R=R, D=D, r=r, d=d, t=t, fn=fn);
     
 }
 
@@ -70,8 +70,8 @@ module qpp_toroid(R=undef, D=undef, r=undef, d=undef, t=undef, $fn=qpp_fn)
 // '-> argument 't' is the width of the the annulus projected to xy-plane
 // NOTE: {"R"|"D", "r"|"d", "t" } is 2-mutex group meaning that 2 parameters must be defined
 // '-> argument "h" is a height of the ring
-// '-> argument "$fn" is just $fn
-module qpp_ring(R=undef, D=undef, r=undef, d=undef, t=undef, h=1, $fn=qpp_fn)
+// '-> argument "fn" is just $fn
+module qpp_ring(R=undef, D=undef, r=undef, d=undef, t=undef, h=1, fn=$fn)
 {
 
     _module_name = "[QPP-ring]";
@@ -80,6 +80,6 @@ module qpp_ring(R=undef, D=undef, r=undef, d=undef, t=undef, h=1, $fn=qpp_fn)
     _h = h;
     assert(h>0, str(_module_name, " argument \"h\" (heigh) muset be positive!"));
 
-    __qpp_toroid_or_ring(is_toroid=false, R=R, D=D, r=r, d=d, t=t, h=_h, $fn=$fn);
+    __qpp_toroid_or_ring(is_toroid=false, R=R, D=D, r=r, d=d, t=t, h=_h, fn=fn);
 
 }
