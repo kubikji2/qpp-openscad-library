@@ -14,13 +14,24 @@ Features that are planned for the library and its development state.
     - [x] additions, subtraction, dot product, cross product wrapper
     - [x] vector norms, number of (un)def elements in list
   - [x] vector/array length, sum, checkers
-- [X] ***dice*** (first, since it is an easy shape)
-- [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
-- [x] ***spherocube*** - sphere-cube hybrid
-- [x] ***cornerless_cube*** - cube with all corners cut off
-- [x] ***edgelesss_cube*** - cube with edges cut off
+- [X] ***Cube++***
+  - [X] ***dice***
+    - [ ] TODO handle interface for *diceoid*
+  - [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
+  - [x] ***spherocube*** - sphere-cube hybrid
+  - [x] ***cornerless_cube*** - cube with all corners cut off
+  - [x] ***edgelesss_cube*** - cube with edges cut off
+- [ ] **Box++** box variants for *cube++*
+  - interface defines additionally bottom- and wall-thickness
+  - foreseen issue: handle the corners/edges cuts parameters
+  - [ ] *box* regular cuboid
+  - [ ] *cylindrobox*
+  - [ ] *spherobox*
+  - [ ] *cornerless_box*
+  - [ ] *edgesless_box*
 - [x] ***trapezoid***
 - [x] ***tetrahedron***
+  - this is just a spicy prism, check for possible merge
   - [x] *regular tetrahedron*
   - [ ] ~~*spherotetrahedron*~~ hard to solve analytically
   - [x] *regular spherotetrahedron*
@@ -57,6 +68,28 @@ Features that are planned for the library and its development state.
 
 - [x] radiation logo
 - [x] biohazard logo
+
+### Library
+
+- [ ] extract each geometry into separate files
+- [ ] create geometries collections grouped by similar properties using includes a.k.a. library files
+  - [ ] **sphero-** geometries
+    - [ ] *spherocube*/*spherocuboid*
+    - [ ] *spherocylinder*
+    - [ ] *spheroring*
+    - [ ] ~~*spheroprism*~~
+    - [ ] *regular spheroprism*
+    - [ ] *regular tetrahedron*
+    - [ ] TODO add other
+  - [ ] **Cube++**
+    - [ ] *cylindrocube* / *cylindrocuboid*
+    - [ ] *spherocube* / *spherocuboid*
+    - [ ] *cornerless cube* / *cuboid*
+    - [ ] *edgeless cube* / *cuboid*
+    - [ ] *dice* ???
+    - [ ] TODO add others
+- some stuff for "ring" alternative
+- box and lids library
 
 ### Features
 
