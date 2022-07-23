@@ -1,5 +1,6 @@
 include<qpp_constants.scad>
 use <qpp_utils.scad>
+use <qpp_transforms.scad>
 
 
 // module used internally by qpp_toroid and qpp_ring since they most of the code is shared
@@ -145,7 +146,53 @@ module qpp_ring(R=undef, R1=undef, R2=undef,
                 t=undef, t1=undef, t2=undef, h=1, fn=$fn)
 {
 
-    _module_name = "[QPP-ring]";
+    __qpp_general_ring_args_processor(R=R, R1=R1, R2=R2, D=D, D1=D1, D2=D2, r=r, r1=r1, r2=r2, d=d, d1=d1, d2=d2, t=t, t1=t1, t2=t2, rr=undef, dd=undef, h=h, is_sphero=false, sphero_hole=false, fn=fn);
+
+}
+
+
+// spheroring a.k.a. annular cylinder with spherical edges
+// '-> argument 'R'|'D' defines the radius/diameter of the outer circle projected to xy-plane
+//     '-> for conical variant use 'R1,R2'|'D1,D2'
+//         '-> 'R1'|'D1' defines the radius/diameter of the outer circle projected to xy-plane at z=0
+//         '-> 'R2'|'D2' defines the radius/diameter of the outer circle projected to xy-plane at z='h'
+// '-> argument 'r'|'d' defines the radius/diameter of the inner circle projected to xy-plane
+//     '-> for conical variant use 'r1,r2'|'d1,d2'
+//         '-> 'r1'|'d1' defines the radius/diameter of the inner circle projected to xy-plane at z=0
+//         '-> 'r2'|'d2' defines the radius/diameter of the inner circle projected to xy-plane at z='h'
+// '-> argument 't' defines the width of the the annulus projected to xy-plane
+//     '-> for conical variant use 't1,t2'
+//         '-> 't1' defines the width of the the annulus projected to xy-plane at z=0
+//         '-> 't2' defines the width of the the annulus projected to xy-plane at z='h'
+// NOTE: {"R"|"D", "r"|"d", "t" } is 2-mutex group meaning that 2 arguments must be defined
+// NOTE: conical and non-conical argument versions can be combined, but at least two arguments must always be defined
+// '-> argument 'rr'|'dd' are rounding radius/diameter
+// '-> argument "h" is a height of the ring
+// '-> argument "fn" is just $fn
+module qpp_spheroring(  R=undef, R1=undef, R2=undef,
+                        D=undef, D1=undef, D2=undef,
+                        r=undef, r1=undef, r2=undef,
+                        d=undef, d1=undef, d2=undef,
+                        t=undef, t1=undef, t2=undef,
+                        rr=undef, dd=undef,
+                        sphero_hole=true, h=1, fn=$fn)
+{
+
+    __qpp_general_ring_args_processor(R=R, R1=R1, R2=R2, D=D, D1=D1, D2=D2, r=r, r1=r1, r2=r2, d=d, d1=d1, d2=d2, t=t, t1=t1, t2=t2, rr=rr, dd=dd, h=h, is_sphero=true, sphero_hole=sphero_hole, fn=fn);
+
+}
+
+// module used to process the arguments
+module __qpp_general_ring_args_processor(   R=undef, R1=undef, R2=undef,
+                                            D=undef, D1=undef, D2=undef,
+                                            r=undef, r1=undef, r2=undef,
+                                            d=undef, d1=undef, d2=undef,
+                                            t=undef, t1=undef, t2=undef,
+                                            rr=undef, dd=undef, h=1,
+                                            is_sphero=true, sphero_hole=true, fn=$fn)
+{
+
+    _module_name = is_sphero ? "[QPP-spheroring]" : "[QPP-ring]";
 
     // check the triplets
     assert(is_undef(R1)==is_undef(R2), str(_module_name, " both argument \"R1\" and \"R2\ must be defined!"));
@@ -172,17 +219,18 @@ module qpp_ring(R=undef, R1=undef, R2=undef,
     _R1 = is_undef(__D1) ? __R1 : __D1/2;
     _R2 = is_undef(__D2) ? __R2 : __D2/2;
 
+    _rr = is_undef(dd) ? rr : dd/2;
 
     // call general ring module
-    __qpp_general_ring(R1=_R1, R2=_R2, r1=_r1, r2=_r2, t1=_t1, t2=_t2, h=1, fn=fn);
+    __qpp_general_ring(R1=_R1, R2=_R2, r1=_r1, r2=_r2, t1=_t1, t2=_t2, rr=_rr, h=1, is_sphero=is_sphero, sphero_hole=sphero_hole, fn=fn);
 
 }
 
-
-module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=undef, h=1, fn=$fn)
+// general ring module -- (sphero) (conical) ring
+module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=undef, rr=undef, h=1, is_sphero=false, sphero_hole=false, fn=$fn)
 {
 
-    _module_name = "[QPP-ring]";
+    _module_name = is_sphero ? "[QPP-spheroring]" : "[QPP-ring]";
 
     // decide whther use default parameters
     _use_default = qpp_count_def([R1, r1, t1]) == 0;
@@ -192,6 +240,7 @@ module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=u
     __r2 = _use_default ? 0.2 : r2;
     __t1 = t1;
     __t2 = t2;
+    _rr = is_undef(rr) ? 0.1 : rr;
     
     // get total number of defined parameters
     _def_mtx_arg_cnt = qpp_count_def([__R1, __r1, __t1]);
@@ -210,17 +259,46 @@ module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=u
     _R1 = _is_rt_def ? __r1+__t1 : __R1;
     _R2 = _is_rt_def ? __r2+__t2 : __R2;
 
-    // construct geometry
-    difference()
+    // the qpp_difference is applied iff either:
+    // - non-spher (regular variant) is modelled
+    // - there is no sphero_hole
+    qpp_difference(!is_sphero || !sphero_hole)
     {
-        // main geometry
-        cylinder(r1=_R1,r2=_R2, h=h);
+        // decide main geometry shape
+        if (is_sphero)
+        {
+            // ... in case of sphero variant ...
+            _hm = sphero_hole ? 1 : 0;
+
+            // ... xy-plane projection points are used ...
+            points = [  [_hm*_r1,0],
+                        [_R1,0],
+                        [_R2,h],
+                        [_hm*_r2,h]];
+            // ... to construct geometry exploiting z-axis symetry ...
+            rotate_extrude($fn=fn)
+                minkowski()
+                {
+                    // ... the polygon is offset by r='rr'
+                    offset(r=-_rr)        
+                        polygon(points=points, paths=[0:3]);
+                    // ... then the minkowski sum using circle of same radius is applied.
+                    circle(r=_rr);
+                }
+        }
+        else
+        {
+            // ... in case of reagular variant, just a cone is used
+            cylinder(r1=_R1,r2=_R2, h=h);
+
+        }
+
+        // this conical cut is applied iff the regular cut is used, otherwise handled by construction
         // '-> compute increments for better visuals
         _dr = _r1-_r2;
         _dr_eps = qpp_eps*tan(_dr/h);
         // cut geometry
         translate([0,0,-qpp_eps])
-            cylinder(r1=_r1+_dr_eps,r2=_r2-_dr_eps, h=h+2*qpp_eps);        
+            cylinder(r1=_r1+_dr_eps,r2=_r2-_dr_eps, h=h+2*qpp_eps);    
     }
-
 }
