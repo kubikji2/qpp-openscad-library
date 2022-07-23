@@ -12,7 +12,7 @@ include<qpp_constants.scad>
 // '-> variable "r" can either be:
 //     '-> r, [r] or [rx,ry,rz]
 // '-> parameter "fn" is used to define the granurality of the corner spheres 
-module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, $fn=qpp_fn)
+module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, fn=qpp_fn)
 {
     // check size vector
     _module_name = "[QPP-SpheroCube]";
@@ -68,7 +68,7 @@ module qpp_spherocube(size=[1,1,1,0.5], xyz=undef, r=undef, $fn=qpp_fn)
         minkowski()
         {
             resize([2*_rx,2*_ry,2*_rz])
-                sphere(r=1,$fn=$fn);
+                sphere(r=1,$fn=fn);
             cube([_x,_y,_z]);
         }
 
