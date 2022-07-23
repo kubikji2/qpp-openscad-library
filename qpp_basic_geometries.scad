@@ -211,11 +211,16 @@ module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=u
     _R2 = _is_rt_def ? __r2+__t2 : __R2;
 
     // construct geometry
-    // TODO improve visuals
     difference()
     {
+        // main geometry
         cylinder(r1=_R1,r2=_R2, h=h);
-        cylinder(r1=_r1,r2=_r2, h=h);        
+        // '-> compute increments for better visuals
+        _dr = _r1-_r2;
+        _dr_eps = qpp_eps*tan(_dr/h);
+        // cut geometry
+        translate([0,0,-qpp_eps])
+            cylinder(r1=_r1+_dr_eps,r2=_r2-_dr_eps, h=h+2*qpp_eps);        
     }
 
 }
