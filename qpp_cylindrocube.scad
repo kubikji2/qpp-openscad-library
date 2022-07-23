@@ -13,7 +13,7 @@ include<qpp_constants.scad>
 //     '-> r, [r] or [rx,ry]
 // NOTE that using "xyz" and "r" supports wider range of combination
 // '-> parameter "fn" is used to define the granurality of the corner spheres 
-module qpp_cylindrocube(size=[1,1,1,0.45], xyz=undef, r=undef, $fn=qpp_fn)
+module qpp_cylindrocube(size=[1,1,1,0.45], xyz=undef, r=undef, fn=qpp_fn)
 {
 
     _module_name = "[QPP-CylindroCube]";
@@ -70,7 +70,7 @@ module qpp_cylindrocube(size=[1,1,1,0.45], xyz=undef, r=undef, $fn=qpp_fn)
         minkowski()
         {
             resize([2*_rx,2*_ry,_h])
-                cylinder(r=1,$fn=$fn);
+                cylinder(r=1,$fn=fn);
             cube([_x,_y,_z]);
         }
 
