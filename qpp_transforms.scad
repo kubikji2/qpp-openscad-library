@@ -77,3 +77,31 @@ module qpp_repeat(n, l, dir="z", normalize=false)
             children();
     }
 }
+
+// the child modules are difference iff the condition is fulfilled
+// '-> argument "cond" is condition to be fullfilled
+// '-> argument "on_fail_abort":
+//     '-> is TRUE - all children other then children(0) are aborted (thrown away)
+//     '-> is FALSE - the union is constructed
+// NOTE: the condition is true by default; therefore, you can use it as regular difference
+// TODO: add options to scale objects a bit to improve the preview
+module qpp_difference(cond=true, on_fail_abort=true)
+{
+    if(cond)
+    {
+        difference()
+        {
+            children(0);
+            children([1:$children-1]);
+        }
+    }
+    else
+    {   
+        children(0);
+        
+        if(!on_fail_abort)
+        {
+            children([1:$children-1]);
+        }
+    }    
+}
