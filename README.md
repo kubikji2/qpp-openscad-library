@@ -59,7 +59,7 @@ Features that are planned for the library and its development state.
 - [ ] ***basic geometries***
   - [x] *toroid*
   - [x] *annular cylinder* or *ring*
-  - [ ] *"ring with a conical hole"*
+  - [ ] *"conical ring with a conical hole"*
   - [ ] *spheroring*
 - [ ] ***randomly wrapped cuboid*** - for damage like-feel
 - [ ] ***rotary polynomials*** - for different polynomial degrees
@@ -81,12 +81,12 @@ Features that are planned for the library and its development state.
     - [ ] *regular spheroprism*
     - [ ] *regular tetrahedron*
     - [ ] TODO add other
-  - [ ] **Cube++**
-    - [ ] *cylindrocube* / *cylindrocuboid*
-    - [ ] *spherocube* / *spherocuboid*
-    - [ ] *cornerless cube* / *cuboid*
-    - [ ] *edgeless cube* / *cuboid*
-    - [ ] *dice* ???
+  - [x] **Cube++**
+    - [x] *cylindrocube* / *cylindrocuboid*
+    - [x] *spherocube* / *spherocuboid*
+    - [x] *cornerless cube* / *cuboid*
+    - [x] *edgeless cube* / *cuboid*
+    - [x] *dice* ???
     - [ ] TODO add others
 - some stuff for "ring" alternative
 - box and lids library
