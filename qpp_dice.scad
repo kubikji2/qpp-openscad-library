@@ -4,13 +4,6 @@ use <qpp_utils.scad>
 // include constants
 include <qpp_constants.scad>
 
-// computes adaptive radius for
-//function __qpp_compute_adaptive_radius(r,min_r,a) = (0.5*r+0.5)*a/min_r;
-// TODO improve this to be more perceptually scalable
-// '-> this kinda do not work,
-function __qpp_compute_adaptive_radius(r,a) = (0.5*r+1)*a;
-
-
 // QPP DICE geometry
 // parameters:
 // size - defines size of the basic cuboid , either scalar, 1D or 3D array
@@ -21,12 +14,7 @@ function __qpp_compute_adaptive_radius(r,a) = (0.5*r+1)*a;
 // '-> if 3D array ellipsoid xyz dimensions are equal to those value
 // fn - just regular fn variable defining the smoothness of the sphere approximation
 // unsafe_mode - if activated, all possible combanation of cube/cuboid and sphere/ellispoid
-// adaptive_corners - defines whether the sphere/ellipsoid is adapted to the cuboid size
-// '-> if turned on, r is expected to be within the range (0,1)
-//     '-> r = 0 -> the resulting shape is sphere/ellipsoid
-//     '-> r = 1 -> the resulting shape is cube/cuboid
-//     '-> other values iterate between -> TODO how
-module qpp_dice(size=1, r=0.75, adaptive_corners=false, unsafe_mode=false, fn=qpp_fn)
+module qpp_dice(size=1, r=0.75, unsafe_mode=false, fn=qpp_fn)
 {   
    // unpack possible single item list
     _size = qpp_try_to_unpack_list(size);
@@ -73,21 +61,16 @@ module qpp_dice(size=1, r=0.75, adaptive_corners=false, unsafe_mode=false, fn=qp
         _rz = _nonuniform_scale == 1 ? _r.z : _r;
 
         // decicde scale coefs based on the adaptivity
-        _sx = adaptive_corners ? __qpp_compute_adaptive_radius(_r,_x) : _rx;
-        _sy = adaptive_corners ? __qpp_compute_adaptive_radius(_r,_y) : _ry;
-        _sz = adaptive_corners ? __qpp_compute_adaptive_radius(_r,_z) : _rz;
+        _sx = _rx;
+        _sy = _ry;
+        _sz = _rz;
 
         intersection()
         {
             resize(newsize=[_sx, _sy, _sz]) sphere(r=1, $fn=fn);
-            #cube([_x,_y,_z], center=true);
+            cube([_x,_y,_z], center=true);
         }
 
     }
 
 }
-
-R = [8,6,8];
-qpp_dice(size=[10,20,30],r=0.99, unsafe_mode=true, adaptive_corners=true);
-//scale(R) sphere(r=1,$fn=qpp_fn);
-//%cube([1,1,1], center=true);
