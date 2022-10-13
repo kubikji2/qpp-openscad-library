@@ -51,7 +51,8 @@ module qpp_edgelesscube(size=[1,1,1], bevel=0.1)
         cube([_x,_y,_z]);
 
         eps = qpp_eps;
-        // cut in x-axis direction
+        
+        // X-AXIS cuts
         _x_dir = [_x+2*eps,0,0];
         _x_pts = [
                     [-eps, _by+eps, _bz+eps],
@@ -59,49 +60,59 @@ module qpp_edgelesscube(size=[1,1,1], bevel=0.1)
                     [-eps,    -eps,    -eps],
                     [-eps, _by+eps,    -eps]
                  ];
-        // in yz axis
+        // offsets for x-axis direction
         _x_offs = [
                     [0,      0,      0],
                     [0, _y-_by,      0],
                     [0, _y-_by, _z-_bz],
                     [0,      0, _z-_bz],
                   ];
-        // generate cuts
-        #_qpp_place_prisms(pts=_x_pts,offs=_x_offs,dir=_x_dir);
+        // generate cuts, if there are any
+        if ((_by > 0) && (_bz > 0))
+        { 
+            _qpp_place_prisms(pts=_x_pts,offs=_x_offs,dir=_x_dir);
+        }
 
+        // Y-AXIS cuts
         _y_dir = [0,_y+2*eps,0];
         _y_pts = [
                     [_bx+eps, -eps, _bz+eps],
                     [   -eps, -eps, _bz+eps],
                     [   -eps, -eps,    -eps],
-                    [_by+eps, -eps,    -eps]
+                    [_bx+eps, -eps,    -eps]
                  ];
-        // in yz axis
+        // offsets for y-axis direction
         _y_offs = [
                     [0,      0,     0],
                     [_x-_bx, 0,     0],
                     [_x-_bx, 0, _z-_bz],
                     [0,      0, _z-_bz],
                   ];
-        // generate cuts
-        #_qpp_place_prisms(pts=_y_pts,offs=_y_offs,dir=_y_dir);
+        // generate cuts, if there are any
+        if ((_bx > 0) && (_bz > 0))
+        {
+            _qpp_place_prisms(pts=_y_pts,offs=_y_offs,dir=_y_dir);
+        }
 
+        // Z-AXIS cuts
         _z_dir = [0,0,_z+2*eps];
         _z_pts = [
                     [_bx+eps, _by+eps, -eps],
                     [   -eps, _by+eps, -eps],
                     [   -eps,    -eps, -eps],
-                    [_by+eps,    -eps, -eps]
+                    [_bx+eps,    -eps, -eps]
                  ];
-        // in yz axis
+        // offsets for z-axis direction
         _z_offs = [
                     [0,           0, 0],
                     [_x-_bx,      0, 0],
                     [_x-_bx, _y-_by, 0],
-                    [0,      _z-_bz, 0],
+                    [0,      _y-_by, 0],
                   ];
-        // generate cuts
-        #_qpp_place_prisms(pts=_z_pts,offs=_z_offs,dir=_z_dir);
-
+        // generate cuts, if there are any
+        if ((_bx > 0) && (_by > 0))
+        {
+            _qpp_place_prisms(pts=_z_pts,offs=_z_offs,dir=_z_dir);
+        }
     }
 }
