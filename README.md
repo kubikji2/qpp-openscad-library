@@ -16,7 +16,7 @@ Features that are planned for the library and its development state.
   - [x] vector/array length, sum, checkers
 - [X] ***Cube++***
   - [X] ***dice***
-    - [ ] TODO handle interface for *diceoid*
+    - [ ] TODO handle *diceoid* and adaptive corners in `dice_exp` branch
   - [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
   - [x] ***spherocube*** - sphere-cube hybrid
   - [x] ***cornerless_cube*** - cube with all corners cut off
@@ -56,11 +56,11 @@ Features that are planned for the library and its development state.
   - [x] *wrinkled cylinder with toroid wrinkles*
   - [ ] *wrinkled prism*
   - [ ] *wrinkled prism with toroid wrinkles*
-- [ ] ***basic geometries***
+- [x] ***basic geometries***
   - [x] *toroid*
   - [x] *annular cylinder* or *ring*
-  - [ ] *"ring with a conical hole"*
-  - [ ] *spheroring*
+  - [x] *"conical ring with a conical hole"*
+  - [x] *spheroring*
 - [ ] ***randomly wrapped cuboid*** - for damage like-feel
 - [ ] ***rotary polynomials*** - for different polynomial degrees
 
@@ -81,12 +81,12 @@ Features that are planned for the library and its development state.
     - [ ] *regular spheroprism*
     - [ ] *regular tetrahedron*
     - [ ] TODO add other
-  - [ ] **Cube++**
-    - [ ] *cylindrocube* / *cylindrocuboid*
-    - [ ] *spherocube* / *spherocuboid*
-    - [ ] *cornerless cube* / *cuboid*
-    - [ ] *edgeless cube* / *cuboid*
-    - [ ] *dice* ???
+  - [x] **Cube++**
+    - [x] *cylindrocube* / *cylindrocuboid*
+    - [x] *spherocube* / *spherocuboid*
+    - [x] *cornerless cube* / *cuboid*
+    - [x] *edgeless cube* / *cuboid*
+    - [x] *dice* ???
     - [ ] TODO add others
 - some stuff for "ring" alternative
 - box and lids library
