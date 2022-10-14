@@ -9,6 +9,7 @@ use <qpp_basic_geometries.scad>
 // utils
 use <qpp_transforms.scad>
 use <qpp_utils.scad>
+use <qpp_debug.scad>
 
 // cuboids++
 use <qpp_cornerlesscube.scad>
