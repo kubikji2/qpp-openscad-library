@@ -4,6 +4,9 @@ use <qpp_utils.scad>
 // use qpp_debug
 use <qpp_debug.scad>
 
+// include utils
+include <qpp_constants.scad>
+
 // skew is based on implementation: https://gist.github.com/boredzo/fde487c724a40a26fa9c
 
 // computes the scew matrix given the six skew angles:
