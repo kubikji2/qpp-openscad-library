@@ -127,5 +127,12 @@ function qpp_pts2vec(from,to) =
         undef;
 
 // cross product wrapper
-// '-> no unit test
+// '-> not unit tested
 function qpp_cross_vec(v1,v2) = cross(v1,v2);
+
+// pointwise product for vectors
+// '-> not unit tested, but straightforward
+function qpp_pointwise_product_vec(v1,v2) = 
+    _qpp_comp_arrs(v1,v2) ?
+        [ for (_i=[0:len(v1)-1]) v1[_i]*v2[_i]] :
+        undef;
