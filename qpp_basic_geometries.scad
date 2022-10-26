@@ -222,7 +222,7 @@ module __qpp_general_ring_args_processor(   R=undef, R1=undef, R2=undef,
     _rr = is_undef(dd) ? rr : dd/2;
 
     // call general ring module
-    __qpp_general_ring(R1=_R1, R2=_R2, r1=_r1, r2=_r2, t1=_t1, t2=_t2, rr=_rr, h=1, is_sphero=is_sphero, sphero_hole=sphero_hole, fn=fn);
+    __qpp_general_ring(R1=_R1, R2=_R2, r1=_r1, r2=_r2, t1=_t1, t2=_t2, rr=_rr, h=h, is_sphero=is_sphero, sphero_hole=sphero_hole, fn=fn);
 
 }
 
