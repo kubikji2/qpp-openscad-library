@@ -85,6 +85,17 @@ function qpp_sub_vec(v1,v2) =
         [for (i=[0:len(v1)-1]) v1[i]-v2[i]] :
         undef;
 
+// multiply vector 'v' by scale 's'
+// '-> order does not matter
+function qpp_scale_vec(s,v) = 
+    is_list(v) && !is_list(s) ?
+        [for (i=[0:len(v)-1]) s*v[i]] :
+        is_list(s) && !is_list(v) ?
+            [for (i=[0:len(s)-1]) v*s[i]] :
+            !is_list(s) && !is_list(v) ?
+                s*v :
+                undef;
+
 // basic recursive implementation of vector sum
 // '-> this recursion is handled as for-loop internally
 // based on:
