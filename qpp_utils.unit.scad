@@ -252,3 +252,18 @@ module qpp_test_count_def()
 }
 
 qpp_test_count_def();
+
+module qpp_test_const_x_vec()
+{
+    args = [
+            [1,0,           0           ],
+            [[1,1],0.5,     [0.5,0.5]   ],
+            [[1],[1],       undef       ],
+            [0.5, [1,1],    [0.5,0.5]   ]
+    ];
+    f = function(x,y) qpp_scale_vec(x,y);
+    qpp_unit_test_function(fcn=f, data=args, nargs=2);
+    echo(test_passed_text(f));
+}
+
+qpp_test_const_x_vec();
