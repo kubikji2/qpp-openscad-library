@@ -97,16 +97,15 @@ module qpp_cone(h=1, R=1, D=undef, __module_name="[QPP-cone]", $fn=qpp_fn)
 // '-> argument "r"|"d" defines the bevel radius/diameter
 // '-> private argument "__module_name" defines name used in the asserts
 // '-> argument "$fn" is regular $fn
-module qpp_spherocone(h=1, R=1, D=undef, r=0.1, d=undef, $fn=qpp_fn)
+// '-> private argument "__module_name" defines name used in the asserts
+module qpp_spherocone(h=1, R=1, D=undef, r=0.1, d=undef, $fn=qpp_fn, __module_name="[QPP-shperocone]")
 {
-    // module name
-    _module_name="[QPP-shperocone]";
     // radius and and check
     _R = is_undef(D) ? R : D/2;
-    assert(_R > 0, str(_module_name, " argument \"R\"|\"D\" must be positive!"));
+    assert(_R > 0, str(__module_name, " argument \"R\"|\"D\" must be positive!"));
     // bevel radius
     _r = is_undef(d) ? r : d/2;
-    assert(_r > 0, str(_module_name, " argument \"r\"|\"d\" must be positive!"));
+    assert(_r > 0, str(__module_name, " argument \"r\"|\"d\" must be positive!"));
     
     // compose xz-plane projection points
     points = [[_R,0], [0,h], [-_R,0]];
@@ -126,19 +125,35 @@ module qpp_spherocone(h=1, R=1, D=undef, r=0.1, d=undef, $fn=qpp_fn)
 }
 
 // regular cone (all edges have same length)
-// '-> argument "h" is he height of the pyramid
-// '-> additional argument "R"|"D" defines the radius/diameter of the base
-//     '-> "R" or "D" overrides argument "a"
-// '-> private argument "__module_name" defines name used in the asserts
+// '-> argument "R"|"D" defines the radius/diameter of the base
+// '-> argument "$fn" is regular $fn
 module qpp_regular_cone(R=0.5, D=undef, $fn=qpp_fn)
 {
     _module_name="[QPP-regular_cone]";
     // check radius
     _R = is_undef(D) ? R : D/2;
     assert(_R > 0, str(_module_name, " argument \"R\"|\"D\" must be positive!"));
-    // compute heigh
+    // compute height
     _h = sqrt(4*_R*_R-_R*_R);
 
     // base module
     qpp_cone($fn=$fn, h=_h, R=R, D=D, __module_name=_module_name);
+}
+
+// regular spherocone (all envelope edges have same length)
+// '-> argument "R"|"D" defines the radius/diameter of the base
+// '-> argument "r"|"d" defines the bevel radius/diameter
+// '-> argument "$fn" is regular $fn
+module qpp_regular_spherocone(R=0.5, D=undef, r=0.1, d=undef, $fn=qpp_fn)
+{
+    // module name
+    _module_name="[QPP-regular_spherocone]";
+    // check radius
+    _R = is_undef(D) ? R : D/2;
+    assert(_R > 0, str(_module_name, " argument \"R\"|\"D\" must be positive!"));
+    // compute height
+    _h = sqrt(4*_R*_R-_R*_R);
+    
+    // base module
+    qpp_spherocone($fn=$fn, h=_h, R=R, D=D, r=r, d=d, __module_name=_module_name);
 }
