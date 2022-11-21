@@ -48,9 +48,9 @@ Features that are planned for the library and its development state.
   - [x] *regular pyramid*
   - [ ] *regular spheropyramid*
   - [x] *cone* wrapper
-  - [ ] *sherocone*
+  - [x] *sherocone*
   - [x] *regular cone*
-  - [ ] *regular spherocone*
+  - [x] *regular spherocone*
 - [ ] ***wrinkled geometries***
   - [x] *wrinkled cylinder* - can-like geometry
   - [x] *wrinkled cylinder with toroid wrinkles*
