@@ -302,3 +302,55 @@ module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=u
             cylinder(r1=_r1+_dr_eps,r2=_r2-_dr_eps, h=h+2*qpp_eps);    
     }
 }
+
+// apply intersection to all children iff the sector angle is over 180°
+module __qpp_cylinder_sector_cutter(_ang)
+{
+    if(_ang < 180)
+    {
+        children();
+    }
+    else
+    {
+        intersection_for(i=[0:$children-1])
+        {
+            children(i);
+        }
+    }
+
+}
+
+module qpp_cylinder_sector(r=1, h=1, d=undef, r1=undef, r2=undef, d1=undef, d2=undef, sector=[-160,190], $fn=$fn)
+{
+
+    // TODO check parameters
+    _d = 2*r;
+    _r = r;
+    _h = h;
+    _min_s = sector[0];
+    _max_s = sector[1];
+
+    _ang = abs(_max_s-_min_s);
+    _h_eps = _h + 2*qpp_eps;
+
+
+    difference()
+    {
+        cylinder(r=_r,h=_h);
+
+        // execute intersection if needed
+        __qpp_cylinder_sector_cutter(_ang)
+        {
+            // lower cut
+            rotate([0,0,_min_s])
+                translate([-_r,-_d,-qpp_eps])
+                    cube([_d,_d,_h_eps]);
+            
+            // upper cut
+            rotate([0,0,_max_s])
+                translate([-_r,0,-qpp_eps])
+                    cube([_d,_d,_h_eps]);
+        }
+    }
+
+}
