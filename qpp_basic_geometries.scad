@@ -302,3 +302,78 @@ module __qpp_general_ring(R1=undef, R2=undef, r1=undef, r2=undef, t1=undef, t2=u
             cylinder(r1=_r1+_dr_eps,r2=_r2-_dr_eps, h=h+2*qpp_eps);    
     }
 }
+
+// apply intersection to all children iff needed
+module __qpp_cylinder_sector_cutter(apply_intersection)
+{
+    if(apply_intersection)
+    {
+        intersection_for(i=[0:$children-1])
+        {
+            children(i);
+        }
+    }
+    else
+    {
+        children();
+    }
+}
+
+// cylinder sector
+// '-> arguments (r)|(d)|(r1,r2)|(d1|d2)
+//     '-> same as the built-in cylinder module arguments, i.e.:
+//         '-> 'r'/'d' is radius/diameter of the cylinder
+//         '-> 'r1'/'d1' and 'r2'/'d2' are base and top facet radius/diameter
+// '-> argument 'sector' (array of length 2) defines the sector of the cylinder 
+//     '-> NOTE: negative angles, non-convex sectors and angles over 360° should be supported as well
+module qpp_cylinder_sector(r=1, h=1, d=undef, r1=undef, r2=undef, d1=undef, d2=undef, sector=[-160,190], $fn=$fn)
+{
+    _module_name = "[QPP-cylinder-sector]";
+    // managing height
+    assert(h > 0, str(_module_name, " height 'h' must be positive!"));
+    _h = h;
+    _h_eps = _h + 2*qpp_eps;
+
+    // checking the radius/diameter
+    _r = is_undef(d) ? r : d/2;
+    _d = 2*_r;
+    assert(_r > 0, str(_module_name, " argument 'r'|'d' must be positive!"));
+
+    // checking r1,r2 / d1,d2
+    __r1 = is_undef(d1) ? r1 : d1/2;
+    __r2 = is_undef(d2) ? r2 : d2/2;
+    assert(qpp_count_undef([r1,r2]) != 1, str(_module_name, " when using 'r1' and 'r2', both radii must be spefied!"));
+    assert(qpp_count_undef([d1,d2]) != 1, str(_module_name, " when using 'd1' and 'd2', both diemeters must be spefied!"));
+    _r1 = is_undef(__r1) ? _r : __r1;
+    _r2 = is_undef(__r2) ? _r : __r2;
+    _R = max(_r1,_r2);
+    _D = 2*_R;
+
+    // checking sector_
+    assert(len(sector) == 2, str (_module_name, " the length of the 'sector' must be 2!"));
+
+    // transform sector to the ensure the valid range for sector
+    _min_s = (sector[0]+360*ceil(abs(sector[0]/360))) % 360;
+    _max_s = (sector[1]+360*ceil(abs(sector[1]/360))) % 360;
+    _apply_intersection = abs(_max_s-_min_s) > 180 || (_min_s > _max_s && abs(_max_s-_min_s) < 180);
+
+    difference()
+    {
+        cylinder(r1=_r1, r2=_r2, h=_h);
+
+        // execute intersection if needed
+        __qpp_cylinder_sector_cutter(_apply_intersection)
+        {
+            // lower cut
+            rotate([0,0,_min_s])
+                translate([-_R,-_D,-qpp_eps])
+                    cube([_D,_D,_h_eps]);
+            
+            // upper cut
+            rotate([0,0,_max_s])
+                translate([-_R,0,-qpp_eps])
+                    cube([_D,_D,_h_eps]);
+        }
+    }
+
+}
