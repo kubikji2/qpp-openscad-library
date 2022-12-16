@@ -150,3 +150,32 @@ module qpp_transform_to_cuboid_side(size, side_name, is_cuboid_centered=true, sh
                 children();
             }
 }
+
+// replicate children at position obtained as all possible comination of the x, y, z coordinates
+// '-> argument 'x' defines possible x coordinates
+//     '-> either scalar or list
+//     '-> default value 0
+// '-> argument 'y' defines possible x coordinates
+//     '-> either scalar or list 
+//     '-> default value 0
+// '-> argument 'z' defines possible x coordinates
+//     '-> either scalar or list
+//     '-> default value 0 
+module qpp_replicate_at(x=0, y=0, z=0) 
+{
+    _x = is_list(x) ? x : [x];
+    _y = is_list(y) ? y : [y];
+    _z = is_list(z) ? z : [z];
+
+    for(xi=[0:len(_x)-1])
+    {
+        for(yi=[0:len(_y)-1])
+        {
+            for(zi=[0:len(_z)-1])
+            {
+                translate([_x[xi], _y[yi], _z[zi]])
+                    children();
+            }
+        }
+    }
+}
