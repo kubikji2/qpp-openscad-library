@@ -15,6 +15,10 @@ Features that are planned for the library and its development state.
     - [x] vector norms, number of (un)def elements in list
   - [x] vector/array length, sum, checkers
 - [X] ***Cube++***
+  - [ ] unify interfaces if possible
+  - [ ] it is possible to select plane for cylindrocube
+  - [ ] optimize cylindrocube by removing hull
+  - [ ] you can obtain cylindrocube through spherocube by setting a radius in an axis to 0
   - [X] ***dice***
     - [ ] TODO handle *diceoid* and adaptive corners in `dice_exp` branch
   - [X] ***cylindrocube*** - cylinder-cube hybrid (corners and sides are rouned in xy-plane only)
