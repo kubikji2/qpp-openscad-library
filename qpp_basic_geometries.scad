@@ -354,9 +354,9 @@ module qpp_cylinder_sector(r=1, h=1, d=undef, r1=undef, r2=undef, d1=undef, d2=u
 
     // transform sector to the ensure the valid range for sector
     _min_s = (sector[0]+360*ceil(abs(sector[0]/360))) % 360;
-    _max_s = (sector[1]+360*ceil(abs(sector[1]/360))) % 360;
+    __max_s = (sector[1]+360*ceil(abs(sector[1]/360))) % 360;
+    _max_s = __max_s == 0 ? 360 :__max_s;
     _apply_intersection = abs(_max_s-_min_s) > 180 || (_min_s > _max_s && abs(_max_s-_min_s) < 180);
-
     difference()
     {
         cylinder(r1=_r1, r2=_r2, h=_h);
